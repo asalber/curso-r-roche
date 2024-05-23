@@ -1,0 +1,40 @@
+---
+title: "Curso de introducción al análisis de datos con R de Roche"
+format: html
+knitr: 
+    opts_chunk: 
+      R.options:
+        warning: false
+lang: es
+---
+
+```{r}
+#| include: false
+# Set global chunk options
+knitr::opts_chunk$set(message = FALSE)
+```
+
+## Ejercicios Resueltos
+
+Para la realización de esta práctica se requieren los siguientes paquetes:
+
+```r
+library(tidyverse)
+# Incluye los siguientes paquetes:
+# - dplyr: para el preprocesamiento y manipulación de datos.
+# - ggplot2: para la creación de gráficos.
+library(broom) # para convertir las listas con los resúmenes de los modelos de regresión a formato organizado.
+library(knitr) # para el formateo de tablas.
+```
+
+:::{#exr-1}
+Cargar el conjunto de [datos de roche](datos/datos-roche.csv) y mostrar las primeras filas.
+:::
+
+::: {.callout-tip collapse="true"}
+## Solución
+
+```{r}
+library(tidyverse)
+```
+:::
