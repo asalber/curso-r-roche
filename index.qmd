@@ -1,10 +1,14 @@
 ---
 title: "Curso de introducción al análisis de datos con R de Roche"
-format: html
-knitr: 
-    opts_chunk: 
-      R.options:
-        warning: false
+format: 
+  html:
+    theme:
+      light: flatly
+      dark: darkly
+execute: 
+  cache: true
+  warning: false
+  message: false
 lang: es
 ---
 
@@ -24,11 +28,13 @@ library(tidyverse)
 # - dplyr: para el preprocesamiento y manipulación de datos.
 # - ggplot2: para la creación de gráficos.
 library(broom) # para convertir las listas con los resúmenes de los modelos de regresión a formato organizado.
+library(vtable) # para la visualización de tablas.
+library(GGally) # para la creación de gráficos de pares.
 library(knitr) # para el formateo de tablas.
 ```
 
 :::{#exr-1}
-Cargar el conjunto de [datos de roche](datos/datos-roche.csv) y mostrar las primeras filas.
+Cargar el conjunto de [datos de roche](datos/datos-roche.csv) en un data frame. Mostrar sus variables (columnas) y las primeras filas.
 :::
 
 ::: {.callout-tip collapse="true"}
@@ -36,5 +42,288 @@ Cargar el conjunto de [datos de roche](datos/datos-roche.csv) y mostrar las prim
 
 ```{r}
 library(tidyverse)
+library(vtable)
+library(knitr)
+# Carga del data frame
+df <- read.csv("datos/datos-roche.csv", stringsAsFactors = T)
+# Mostrar las variables
+vt(df)
+# Mostrar las primeras filas
+head(df) |> 
+  kable()
 ```
 :::
+
+:::{#exr-2}
+Crear una nueva variable con el total de veces que el médico ha sido visitado virtual o presencialmente. Mostrar las primeras filas de la variable creada.
+
+::: {.callout-tip collapse="true"}
+## Solución
+
+```{r}
+df <- df |> 
+  mutate(total_visitas = Num_VisitaF2F + Num_VisitaVirtual)
+
+df |>
+  select(total_visitas) |>
+  head() |>
+  kable()
+```
+:::
+:::
+
+:::{#exr-3}
+Crear una nueva variable con el total de veces que el médico ha interactuado por algún medio. Mostrar las primeras filas de la variable creada.
+
+::: {.callout-tip collapse="true"}
+## Solución
+
+```{r}
+df <- df |> 
+  mutate(total_interacciones = 
+    Num_VisitaF2F + Num_EventoF2F + Num_VisitaVirtual + Num_EcampOPEN + 
+    Num_EventoVirt + Num_NLCLICK + Num_Elearning + Num_RochePlus
+  )
+
+df |>
+  select(total_interacciones) |>
+  head() |>
+  kable()
+```
+:::
+:::
+
+:::{#exr-4}
+Crear una nueva variable con el total de criterios que cumple cada médico. Mostrar las primeras filas de la variable creada.
+
+::: {.callout-tip collapse="true"}
+## Solución
+
+```{r}
+df <- df |> 
+  mutate(total_criterios = 
+    if_else(Cumple_VisitaF2F == "SI", 1, 0) +
+    if_else(Cumple_EventoF2F == "SI", 1, 0) +
+    if_else(Cumple_VisitaVirtual == "SI", 1, 0) +
+    if_else(Cumple_EcampOPEN == "SI", 1, 0) +
+    if_else(Cumple_EventoVirt == "SI", 1, 0) +
+    if_else(Cumple_NLCLICK == "SI", 1, 0) +
+    if_else(Cumple_Elearning == "SI", 1, 0) +
+    if_else(CumpleRochePlus == "SI", 1, 0)
+  )
+
+df |>
+  select(total_criterios) |>
+  head() |>
+  kable()
+```
+:::
+:::
+
+:::{#exr-5}
+Filtrar el conjunto de datos para quedarse con los médicos expertos en oncología de la zona centro que han sido visitados al menos dos veces. ¿Cuántos médicos cumplen con estas condiciones?
+
+::: {.callout-tip collapse="true"}
+## Solución
+
+```{r}
+df_filtrado <- df |> 
+  filter(ZONA == "CENTRO", SQUAD == "ONCOLOGY", ES_TAE == "SI", total_visitas >= 2)
+
+nrow(df_filtrado)
+```
+:::
+:::
+
+:::{#exr-6}
+Eliminar de la base de datos los médicos que no han tenido ninguna interacción. ¿Cuántos médicos quedan en la base de datos?
+
+::: {.callout-tip collapse="true"}
+## Solución
+
+```{r}
+df <- df |> 
+  filter(total_interacciones > 0)
+
+nrow(df)
+```
+:::
+:::
+
+:::{#exr-7}
+Mostrar la tabla de frecuencias de los equipos (squad). Mostrar también la tabla de frecuencias de las especialidades agrupadas por equipos.
+
+::: {.callout-tip collapse="true"}
+## Solución
+
+```{r}
+df |> 
+  count(SQUAD) |> 
+  kable()
+```
+
+```{r}
+df |> 
+  count(SQUAD, INDICACIÓN) |> 
+  kable()
+```
+:::
+:::
+
+:::{#exr-8}
+Dibujar el diagrama de barras de las especialidades. ¿Qué especialidad es la más frecuente? Dibujar también el diagrama de barras de las especialidades coloreando las barras según el equipo.
+
+::: {.callout-tip collapse="true"}
+## Solución
+
+```{r}
+df |>  
+  ggplot(aes(x = INDICACIÓN, fill = SQUAD)) +
+  geom_bar()
+```
+:::
+:::
+
+:::{#exr-9}
+Dibujar el diagrama de barras con el número de visitas presenciales y virtuales de cada grupo. ¿Qué grupo ha tenido un mayor número de visitas presenciales? ¿Y de visitas virtuales?
+
+::: {.callout-tip collapse="true"}
+## Solución
+
+```{r}
+df |>
+  group_by(SQUAD) |>
+  summarise(
+    Num_VisitaF2F = sum(Num_VisitaF2F),
+    Num_VisitaVirtual = sum(Num_VisitaVirtual)
+  ) |> 
+  pivot_longer(cols = c(Num_VisitaF2F, Num_VisitaVirtual), names_to = "Tipo_Visita", values_to = "Num_Visitas") |>
+  ggplot(aes(x = SQUAD, y = Num_Visitas, fill = Tipo_Visita)) +
+  geom_bar(stat = "identity")
+```
+:::
+:::
+
+:::{#exr-10}
+Dibujar un histograma del número de visitas a la página web de Roche para médicos, eliminando los médicos que no han visitado la página web.
+
+::: {.callout-tip collapse="true"}
+## Solución
+
+```{r}
+df |> 
+  filter(Num_RochePlus > 0) |>
+  ggplot(aes(x = Num_RochePlus)) +
+  geom_histogram(col = "white", fill = "steelblue")
+```
+:::
+:::
+
+:::{#exr-11}
+Dibujar el diagrama de cajas del número de visitas a la página web de Roche para médicos, eliminando los médicos que no han visitado la página web. 
+
+¿Existen datos atípicos? Eliminar el 5% de los datos atípicos más extremos y volver a dibujar el diagrama de cajas.
+
+::: {.callout-tip collapse="true"}
+## Solución
+
+```{r}
+df |> 
+  filter(Num_RochePlus > 0) |>
+  ggplot(aes(x = Num_RochePlus)) +
+  geom_boxplot(fill = "steelblue")
+```
+
+```{r}
+df |> 
+  filter(Num_RochePlus > 0) |>
+  filter(Num_RochePlus < quantile(Num_RochePlus, 0.95)) |>
+  ggplot(aes(x = Num_RochePlus)) +
+  geom_boxplot(fill = "steelblue")
+```
+:::
+:::
+
+:::{#exr-12}
+Dibujar el diagram de cajas del número de visitas a la página web de Roche para médicos, eliminando los médicos que no han visitado la página web y agrupando según el equipo. ¿Qué equipo tiene un mayor número de visitas a la página web?
+
+::: {.callout-tip collapse="true"}
+## Solución
+
+```{r}
+df |> 
+  filter(Num_RochePlus > 0) |>
+  filter(Num_RochePlus < quantile(Num_RochePlus, 0.95)) |>
+  ggplot(aes(x = SQUAD, y = Num_RochePlus, fill = SQUAD)) +
+  geom_boxplot()
+```
+:::
+:::
+
+:::{#exr-13}
+Realizar un resumen descriptivo de las variables numéricas del conjunto de datos.
+
+::: {.callout-tip collapse="true"}
+## Solución
+
+```{r}
+df |>
+  select_if(is.numeric) |> 
+  st()
+```
+:::
+:::
+
+:::{#exr-14}
+Realizar un resumen descriptivo con la media y la desviación típica del número de visitas presenciales y virtuales agrupadas por equipo.
+
+::: {.callout-tip collapse="true"}
+## Solución
+
+```{r}
+st(df, vars = c("Num_VisitaF2F", "Num_VisitaVirtual"), group = "SQUAD", summ = c('mean(x)', 'sd(x)'),
+summ.names = c("Media", "Desv. típica"))
+```
+
+Otra forma.
+
+```{r}
+df |>
+  group_by(SQUAD) |>
+  select_if(is.numeric) |>
+  summarise(across(everything(), list(mean = mean, sd = sd)) ) |> 
+  kable()
+```
+:::
+:::  
+
+:::{#exr-14}
+Dibujar el diagrama de dispersión entre el número de correos electrónicos enviados y el número de correos electrónicos abiertos. ¿Existe alguna relación entre estas dos variables?
+
+::: {.callout-tip collapse="true"}
+## Solución
+
+```{r}
+df |> 
+  ggplot(aes(x = Num_EcampSENT, y = Num_EcampOPEN)) +
+  geom_point()
+```
+:::
+:::
+
+:::{#exr-15}
+Dibujar los diagramas de dispersión de todas las variables numéricas del conjunto de datos. ¿Existe alguna relación entre las variables?
+
+::: {.callout-tip collapse="true"}
+## Solución
+
+```{r}
+library(GGally)
+df |> 
+  filter(Num_EcampOPEN > 0) |>
+  select_if(is.numeric) |> 
+  ggpairs()
+```
+:::
+:::
+

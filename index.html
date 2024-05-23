@@ -63,10 +63,14 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <script src="index_files/libs/quarto-html/tippy.umd.min.js"></script>
 <script src="index_files/libs/quarto-html/anchor.min.js"></script>
 <link href="index_files/libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="index_files/libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<link href="index_files/libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
+<link href="index_files/libs/quarto-html/quarto-syntax-highlighting-dark.css" rel="prefetch" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
 <script src="index_files/libs/bootstrap/bootstrap.min.js"></script>
 <link href="index_files/libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="index_files/libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<link href="index_files/libs/bootstrap/bootstrap.min.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="index_files/libs/bootstrap/bootstrap-dark.min.css" rel="prefetch" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<script src="index_files/libs/kePrint-0.0.1/kePrint.js"></script>
+<link href="index_files/libs/lightable-0.0.1/lightable.css" rel="stylesheet">
 
 
 </head>
@@ -104,9 +108,11 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="co"># - dplyr: para el preprocesamiento y manipulación de datos.</span></span>
 <span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="co"># - ggplot2: para la creación de gráficos.</span></span>
 <span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(broom) <span class="co"># para convertir las listas con los resúmenes de los modelos de regresión a formato organizado.</span></span>
-<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(knitr) <span class="co"># para el formateo de tablas.</span></span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(vtable) <span class="co"># para la visualización de tablas.</span></span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(GGally) <span class="co"># para la creación de gráficos de pares.</span></span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(knitr) <span class="co"># para el formateo de tablas.</span></span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div id="exr-1" class="theorem exercise">
-<p><span class="theorem-title"><strong>Ejercicio 1</strong></span> Cargar el conjunto de datos de roche y mostrar las primeras filas.</p>
+<p><span class="theorem-title"><strong>Ejercicio 1</strong></span> Cargar el conjunto de <a href="datos/datos-roche.csv">datos de roche</a> en un data frame. Mostrar sus variables (columnas) y las primeras filas.</p>
 </div>
 <div class="callout callout-style-default callout-tip callout-titled">
 <div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-1-contents" aria-controls="callout-1" aria-expanded="false" aria-label="Toggle callout">
@@ -121,7 +127,1618 @@ Solución
 <div id="callout-1" class="callout-1-contents callout-collapse collapse">
 <div class="callout-body-container callout-body">
 <div class="cell">
-<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(vtable)</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(knitr)</span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Carga del data frame</span></span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>df <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">"datos/datos-roche.csv"</span>, <span class="at">stringsAsFactors =</span> T)</span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a><span class="co"># Mostrar las variables</span></span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a><span class="fu">vt</span>(df)</span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<table class="table table-sm table-striped small" data-quarto-postprocess="true">
+<caption>df</caption>
+<thead>
+<tr class="header">
+<th style="text-align: left;" data-quarto-table-cell-role="th">Name</th>
+<th style="text-align: left;" data-quarto-table-cell-role="th">Class</th>
+<th style="text-align: left;" data-quarto-table-cell-role="th">Values</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">ZONA</td>
+<td style="text-align: left;">factor</td>
+<td style="text-align: left;">'CENTRO' 'LEVANTE' 'NORESTE' 'NORTE' 'SUR'</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">ID_MÉDICO</td>
+<td style="text-align: left;">factor</td>
+<td style="text-align: left;">'001690000339pi7AAA' '001690000339pi8AAA' '001690000339tjFAAQ' '001690000339tjGAAQ' '001690000339tyhAAA' and 6953 more</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">SQUAD</td>
+<td style="text-align: left;">factor</td>
+<td style="text-align: left;">'ALOPECIA' 'AUTOINMUNE' 'FLU' 'HEART' 'OBESITY' and 1 more</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">INDICACIÓN</td>
+<td style="text-align: left;">factor</td>
+<td style="text-align: left;">'ALOPECIA ANDROGÉNICA' 'ALOPECIA AREATA' 'ARTEROPATÍA CORONARIA' 'CÁNCER DE CORAZÓN' 'CANCER DE GLÁNDULA SALIVAL' and 11 more</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">GP</td>
+<td style="text-align: left;">factor</td>
+<td style="text-align: left;">'P1' 'P2' 'P3' 'P5' 'UNKNOWN'</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">ES_TAE</td>
+<td style="text-align: left;">factor</td>
+<td style="text-align: left;">'NO' 'SI'</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">CONSENT.PROFILING</td>
+<td style="text-align: left;">factor</td>
+<td style="text-align: left;">'No' 'Si' 'Sin Respuesta'</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">CONSENT.EMAIL</td>
+<td style="text-align: left;">factor</td>
+<td style="text-align: left;">'' 'Consent recieved' 'Kai Wang'</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Q</td>
+<td style="text-align: left;">factor</td>
+<td style="text-align: left;">'Q1 2024' 'Q2 2023' 'Q3 2023' 'Q4 2023'</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">MAX.GP</td>
+<td style="text-align: left;">factor</td>
+<td style="text-align: left;">'P1' 'P2' 'P3' 'P5' 'UNKNOWN'</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">TAE_max</td>
+<td style="text-align: left;">factor</td>
+<td style="text-align: left;">'Clinician' 'Emerging TAE' 'International' 'National' 'No TAE' and 2 more</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Cumple_VisitaF2F</td>
+<td style="text-align: left;">factor</td>
+<td style="text-align: left;">'NO' 'SI'</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Cumple_EventoF2F</td>
+<td style="text-align: left;">factor</td>
+<td style="text-align: left;">'NO' 'SI'</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Cumple_VisitaVirtual</td>
+<td style="text-align: left;">factor</td>
+<td style="text-align: left;">'NO' 'SI'</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Cumple_EcampOPEN</td>
+<td style="text-align: left;">factor</td>
+<td style="text-align: left;">'NO' 'SI'</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Cumple_EventoVirt</td>
+<td style="text-align: left;">factor</td>
+<td style="text-align: left;">'NO' 'SI'</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Cumple_NLCLICK</td>
+<td style="text-align: left;">factor</td>
+<td style="text-align: left;">'NO' 'SI'</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Cumple_Elearning</td>
+<td style="text-align: left;">factor</td>
+<td style="text-align: left;">'NO' 'SI'</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">CumpleRochePlus</td>
+<td style="text-align: left;">factor</td>
+<td style="text-align: left;">'NO' 'SI'</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Num_VisitaF2F</td>
+<td style="text-align: left;">integer</td>
+<td style="text-align: left;">Num: 0 to 19</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Num_EventoF2F</td>
+<td style="text-align: left;">integer</td>
+<td style="text-align: left;">Num: 0 to 6</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Num_VisitaVirtual</td>
+<td style="text-align: left;">integer</td>
+<td style="text-align: left;">Num: 0 to 14</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Num_EcampOPEN</td>
+<td style="text-align: left;">integer</td>
+<td style="text-align: left;">Num: 0 to 10</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Num_EcampSENT</td>
+<td style="text-align: left;">integer</td>
+<td style="text-align: left;">Num: 0 to 12</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Num_EventoVirt</td>
+<td style="text-align: left;">integer</td>
+<td style="text-align: left;">Num: 0 to 3</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Num_NLCLICK</td>
+<td style="text-align: left;">integer</td>
+<td style="text-align: left;">Num: 0 to 8</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Num_NLSENT</td>
+<td style="text-align: left;">integer</td>
+<td style="text-align: left;">Num: 0 to 14</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Num_Elearning</td>
+<td style="text-align: left;">integer</td>
+<td style="text-align: left;">Num: 0 to 0</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Num_RochePlus</td>
+<td style="text-align: left;">integer</td>
+<td style="text-align: left;">Num: 0 to 130</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Segmento_SCORE</td>
+<td style="text-align: left;">factor</td>
+<td style="text-align: left;">'OMNICHANNEL' 'OMNICHANNELPLUS' 'ONLYDIGITAL' 'ONLYF2F' 'ZERO'</td>
+</tr>
+</tbody>
+</table>
+
+
+</div>
+</div>
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Mostrar las primeras filas</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(df) <span class="sc">|&gt;</span> </span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">kable</span>()</span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<table class="table table-sm table-striped small">
+<colgroup>
+<col style="width: 1%">
+<col style="width: 4%">
+<col style="width: 2%">
+<col style="width: 5%">
+<col style="width: 0%">
+<col style="width: 1%">
+<col style="width: 4%">
+<col style="width: 4%">
+<col style="width: 1%">
+<col style="width: 1%">
+<col style="width: 1%">
+<col style="width: 4%">
+<col style="width: 4%">
+<col style="width: 5%">
+<col style="width: 4%">
+<col style="width: 4%">
+<col style="width: 3%">
+<col style="width: 4%">
+<col style="width: 3%">
+<col style="width: 3%">
+<col style="width: 3%">
+<col style="width: 4%">
+<col style="width: 3%">
+<col style="width: 3%">
+<col style="width: 3%">
+<col style="width: 2%">
+<col style="width: 2%">
+<col style="width: 3%">
+<col style="width: 3%">
+<col style="width: 3%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;">ZONA</th>
+<th style="text-align: left;">ID_MÉDICO</th>
+<th style="text-align: left;">SQUAD</th>
+<th style="text-align: left;">INDICACIÓN</th>
+<th style="text-align: left;">GP</th>
+<th style="text-align: left;">ES_TAE</th>
+<th style="text-align: left;">CONSENT.PROFILING</th>
+<th style="text-align: left;">CONSENT.EMAIL</th>
+<th style="text-align: left;">Q</th>
+<th style="text-align: left;">MAX.GP</th>
+<th style="text-align: left;">TAE_max</th>
+<th style="text-align: left;">Cumple_VisitaF2F</th>
+<th style="text-align: left;">Cumple_EventoF2F</th>
+<th style="text-align: left;">Cumple_VisitaVirtual</th>
+<th style="text-align: left;">Cumple_EcampOPEN</th>
+<th style="text-align: left;">Cumple_EventoVirt</th>
+<th style="text-align: left;">Cumple_NLCLICK</th>
+<th style="text-align: left;">Cumple_Elearning</th>
+<th style="text-align: left;">CumpleRochePlus</th>
+<th style="text-align: right;">Num_VisitaF2F</th>
+<th style="text-align: right;">Num_EventoF2F</th>
+<th style="text-align: right;">Num_VisitaVirtual</th>
+<th style="text-align: right;">Num_EcampOPEN</th>
+<th style="text-align: right;">Num_EcampSENT</th>
+<th style="text-align: right;">Num_EventoVirt</th>
+<th style="text-align: right;">Num_NLCLICK</th>
+<th style="text-align: right;">Num_NLSENT</th>
+<th style="text-align: right;">Num_Elearning</th>
+<th style="text-align: right;">Num_RochePlus</th>
+<th style="text-align: left;">Segmento_SCORE</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">CENTRO</td>
+<td style="text-align: left;">001690000339tz7AAA</td>
+<td style="text-align: left;">ONCOLOGY</td>
+<td style="text-align: left;">CANCER DE OIDO</td>
+<td style="text-align: left;">P3</td>
+<td style="text-align: left;">NO</td>
+<td style="text-align: left;">Si</td>
+<td style="text-align: left;">Consent recieved</td>
+<td style="text-align: left;">Q1 2024</td>
+<td style="text-align: left;">P3</td>
+<td style="text-align: left;">No TAE</td>
+<td style="text-align: left;">SI</td>
+<td style="text-align: left;">NO</td>
+<td style="text-align: left;">NO</td>
+<td style="text-align: left;">NO</td>
+<td style="text-align: left;">NO</td>
+<td style="text-align: left;">NO</td>
+<td style="text-align: left;">NO</td>
+<td style="text-align: left;">NO</td>
+<td style="text-align: right;">3</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: left;">ONLYF2F</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">CENTRO</td>
+<td style="text-align: left;">00169000033Vl9vAAC</td>
+<td style="text-align: left;">HEART</td>
+<td style="text-align: left;">ARTEROPATÍA CORONARIA</td>
+<td style="text-align: left;">P3</td>
+<td style="text-align: left;">NO</td>
+<td style="text-align: left;">Si</td>
+<td style="text-align: left;">Consent recieved</td>
+<td style="text-align: left;">Q2 2023</td>
+<td style="text-align: left;">P3</td>
+<td style="text-align: left;">No TAE</td>
+<td style="text-align: left;">NO</td>
+<td style="text-align: left;">NO</td>
+<td style="text-align: left;">NO</td>
+<td style="text-align: left;">NO</td>
+<td style="text-align: left;">NO</td>
+<td style="text-align: left;">NO</td>
+<td style="text-align: left;">NO</td>
+<td style="text-align: left;">NO</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: left;">ZERO</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">CENTRO</td>
+<td style="text-align: left;">00169000033XzsuAAC</td>
+<td style="text-align: left;">HEART</td>
+<td style="text-align: left;">MIOCARDIOPATÍA</td>
+<td style="text-align: left;">P3</td>
+<td style="text-align: left;">NO</td>
+<td style="text-align: left;">Si</td>
+<td style="text-align: left;">Consent recieved</td>
+<td style="text-align: left;">Q1 2024</td>
+<td style="text-align: left;">P3</td>
+<td style="text-align: left;">No TAE</td>
+<td style="text-align: left;">SI</td>
+<td style="text-align: left;">NO</td>
+<td style="text-align: left;">NO</td>
+<td style="text-align: left;">NO</td>
+<td style="text-align: left;">SI</td>
+<td style="text-align: left;">NO</td>
+<td style="text-align: left;">NO</td>
+<td style="text-align: left;">NO</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: left;">OMNICHANNELPLUS</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">CENTRO</td>
+<td style="text-align: left;">00169000033XzswAAC</td>
+<td style="text-align: left;">HEART</td>
+<td style="text-align: left;">ARTEROPATÍA CORONARIA</td>
+<td style="text-align: left;">P3</td>
+<td style="text-align: left;">NO</td>
+<td style="text-align: left;">Si</td>
+<td style="text-align: left;">Consent recieved</td>
+<td style="text-align: left;">Q3 2023</td>
+<td style="text-align: left;">P3</td>
+<td style="text-align: left;">No TAE</td>
+<td style="text-align: left;">NO</td>
+<td style="text-align: left;">NO</td>
+<td style="text-align: left;">SI</td>
+<td style="text-align: left;">NO</td>
+<td style="text-align: left;">NO</td>
+<td style="text-align: left;">NO</td>
+<td style="text-align: left;">NO</td>
+<td style="text-align: left;">NO</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: left;">ONLYDIGITAL</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">CENTRO</td>
+<td style="text-align: left;">00169000033XztQAAS</td>
+<td style="text-align: left;">OBESITY</td>
+<td style="text-align: left;">OBESIDAD</td>
+<td style="text-align: left;">P5</td>
+<td style="text-align: left;">NO</td>
+<td style="text-align: left;">Si</td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;">Q3 2023</td>
+<td style="text-align: left;">P5</td>
+<td style="text-align: left;">No TAE</td>
+<td style="text-align: left;">NO</td>
+<td style="text-align: left;">NO</td>
+<td style="text-align: left;">NO</td>
+<td style="text-align: left;">NO</td>
+<td style="text-align: left;">NO</td>
+<td style="text-align: left;">NO</td>
+<td style="text-align: left;">NO</td>
+<td style="text-align: left;">NO</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: left;">ZERO</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">CENTRO</td>
+<td style="text-align: left;">00169000033XzTwAAK</td>
+<td style="text-align: left;">OBESITY</td>
+<td style="text-align: left;">OBESIDAD</td>
+<td style="text-align: left;">P5</td>
+<td style="text-align: left;">NO</td>
+<td style="text-align: left;">Si</td>
+<td style="text-align: left;">Consent recieved</td>
+<td style="text-align: left;">Q3 2023</td>
+<td style="text-align: left;">P5</td>
+<td style="text-align: left;">No TAE</td>
+<td style="text-align: left;">SI</td>
+<td style="text-align: left;">NO</td>
+<td style="text-align: left;">NO</td>
+<td style="text-align: left;">NO</td>
+<td style="text-align: left;">NO</td>
+<td style="text-align: left;">NO</td>
+<td style="text-align: left;">NO</td>
+<td style="text-align: left;">NO</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: left;">ONLYF2F</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div id="exr-2" class="theorem exercise">
+<p><span class="theorem-title"><strong>Ejercicio 2</strong></span> Crear una nueva variable con el total de veces que el médico ha sido visitado virtual o presencialmente. Mostrar las primeras filas de la variable creada.</p>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-2-contents" aria-controls="callout-2" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Solución
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-2" class="callout-2-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<div class="cell">
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>df <span class="ot">&lt;-</span> df <span class="sc">|&gt;</span> </span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">total_visitas =</span> Num_VisitaF2F <span class="sc">+</span> Num_VisitaVirtual)</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>df <span class="sc">|&gt;</span></span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(total_visitas) <span class="sc">|&gt;</span></span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">head</span>() <span class="sc">|&gt;</span></span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">kable</span>()</span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<table class="table table-sm table-striped small">
+<thead>
+<tr class="header">
+<th style="text-align: right;">total_visitas</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: right;">3</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">0</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">2</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">2</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">0</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">2</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div id="exr-3" class="theorem exercise">
+<p><span class="theorem-title"><strong>Ejercicio 3</strong></span> Crear una nueva variable con el total de veces que el médico ha interactuado por algún medio. Mostrar las primeras filas de la variable creada.</p>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-3-contents" aria-controls="callout-3" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Solución
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-3" class="callout-3-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<div class="cell">
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>df <span class="ot">&lt;-</span> df <span class="sc">|&gt;</span> </span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">total_interacciones =</span> </span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>    Num_VisitaF2F <span class="sc">+</span> Num_EventoF2F <span class="sc">+</span> Num_VisitaVirtual <span class="sc">+</span> Num_EcampOPEN <span class="sc">+</span> </span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>    Num_EventoVirt <span class="sc">+</span> Num_NLCLICK <span class="sc">+</span> Num_Elearning <span class="sc">+</span> Num_RochePlus</span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>df <span class="sc">|&gt;</span></span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(total_interacciones) <span class="sc">|&gt;</span></span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">head</span>() <span class="sc">|&gt;</span></span>
+<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">kable</span>()</span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<table class="table table-sm table-striped small">
+<thead>
+<tr class="header">
+<th style="text-align: right;">total_interacciones</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: right;">3</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">0</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">3</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">2</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">0</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">2</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div id="exr-4" class="theorem exercise">
+<p><span class="theorem-title"><strong>Ejercicio 4</strong></span> Crear una nueva variable con el total de criterios que cumple cada médico. Mostrar las primeras filas de la variable creada.</p>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-4-contents" aria-controls="callout-4" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Solución
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-4" class="callout-4-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<div class="cell">
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>df <span class="ot">&lt;-</span> df <span class="sc">|&gt;</span> </span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">total_criterios =</span> </span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">if_else</span>(Cumple_VisitaF2F <span class="sc">==</span> <span class="st">"SI"</span>, <span class="dv">1</span>, <span class="dv">0</span>) <span class="sc">+</span></span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>    <span class="fu">if_else</span>(Cumple_EventoF2F <span class="sc">==</span> <span class="st">"SI"</span>, <span class="dv">1</span>, <span class="dv">0</span>) <span class="sc">+</span></span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>    <span class="fu">if_else</span>(Cumple_VisitaVirtual <span class="sc">==</span> <span class="st">"SI"</span>, <span class="dv">1</span>, <span class="dv">0</span>) <span class="sc">+</span></span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>    <span class="fu">if_else</span>(Cumple_EcampOPEN <span class="sc">==</span> <span class="st">"SI"</span>, <span class="dv">1</span>, <span class="dv">0</span>) <span class="sc">+</span></span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>    <span class="fu">if_else</span>(Cumple_EventoVirt <span class="sc">==</span> <span class="st">"SI"</span>, <span class="dv">1</span>, <span class="dv">0</span>) <span class="sc">+</span></span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a>    <span class="fu">if_else</span>(Cumple_NLCLICK <span class="sc">==</span> <span class="st">"SI"</span>, <span class="dv">1</span>, <span class="dv">0</span>) <span class="sc">+</span></span>
+<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a>    <span class="fu">if_else</span>(Cumple_Elearning <span class="sc">==</span> <span class="st">"SI"</span>, <span class="dv">1</span>, <span class="dv">0</span>) <span class="sc">+</span></span>
+<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a>    <span class="fu">if_else</span>(CumpleRochePlus <span class="sc">==</span> <span class="st">"SI"</span>, <span class="dv">1</span>, <span class="dv">0</span>)</span>
+<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-13"><a href="#cb6-13" aria-hidden="true" tabindex="-1"></a>df <span class="sc">|&gt;</span></span>
+<span id="cb6-14"><a href="#cb6-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(total_criterios) <span class="sc">|&gt;</span></span>
+<span id="cb6-15"><a href="#cb6-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">head</span>() <span class="sc">|&gt;</span></span>
+<span id="cb6-16"><a href="#cb6-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">kable</span>()</span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<table class="table table-sm table-striped small">
+<thead>
+<tr class="header">
+<th style="text-align: right;">total_criterios</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: right;">1</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">0</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">2</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">1</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">0</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">1</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div id="exr-5" class="theorem exercise">
+<p><span class="theorem-title"><strong>Ejercicio 5</strong></span> Filtrar el conjunto de datos para quedarse con los médicos expertos en oncología de la zona centro que han sido visitados al menos dos veces. ¿Cuántos médicos cumplen con estas condiciones?</p>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-5-contents" aria-controls="callout-5" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Solución
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-5" class="callout-5-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<div class="cell">
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>df_filtrado <span class="ot">&lt;-</span> df <span class="sc">|&gt;</span> </span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(ZONA <span class="sc">==</span> <span class="st">"CENTRO"</span>, SQUAD <span class="sc">==</span> <span class="st">"ONCOLOGY"</span>, ES_TAE <span class="sc">==</span> <span class="st">"SI"</span>, total_visitas <span class="sc">&gt;=</span> <span class="dv">2</span>)</span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a><span class="fu">nrow</span>(df_filtrado)</span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 567</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div id="exr-6" class="theorem exercise">
+<p><span class="theorem-title"><strong>Ejercicio 6</strong></span> Eliminar de la base de datos los médicos que no han tenido ninguna interacción. ¿Cuántos médicos quedan en la base de datos?</p>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-6-contents" aria-controls="callout-6" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Solución
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-6" class="callout-6-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<div class="cell">
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>df <span class="ot">&lt;-</span> df <span class="sc">|&gt;</span> </span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(total_interacciones <span class="sc">&gt;</span> <span class="dv">0</span>)</span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a><span class="fu">nrow</span>(df)</span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 32748</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div id="exr-7" class="theorem exercise">
+<p><span class="theorem-title"><strong>Ejercicio 7</strong></span> Mostrar la tabla de frecuencias de los equipos (squad). Mostrar también la tabla de frecuencias de las especialidades agrupadas por equipos.</p>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-7-contents" aria-controls="callout-7" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Solución
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-7" class="callout-7-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<div class="cell">
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>df <span class="sc">|&gt;</span> </span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">count</span>(SQUAD) <span class="sc">|&gt;</span> </span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">kable</span>()</span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<table class="table table-sm table-striped small">
+<thead>
+<tr class="header">
+<th style="text-align: left;">SQUAD</th>
+<th style="text-align: right;">n</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">ALOPECIA</td>
+<td style="text-align: right;">1235</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">AUTOINMUNE</td>
+<td style="text-align: right;">1310</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">FLU</td>
+<td style="text-align: right;">5951</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">HEART</td>
+<td style="text-align: right;">7369</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">OBESITY</td>
+<td style="text-align: right;">4738</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">ONCOLOGY</td>
+<td style="text-align: right;">12145</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>df <span class="sc">|&gt;</span> </span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">count</span>(SQUAD, INDICACIÓN) <span class="sc">|&gt;</span> </span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">kable</span>()</span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<table class="table table-sm table-striped small">
+<thead>
+<tr class="header">
+<th style="text-align: left;">SQUAD</th>
+<th style="text-align: left;">INDICACIÓN</th>
+<th style="text-align: right;">n</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">ALOPECIA</td>
+<td style="text-align: left;">ALOPECIA ANDROGÉNICA</td>
+<td style="text-align: right;">177</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">ALOPECIA</td>
+<td style="text-align: left;">ALOPECIA AREATA</td>
+<td style="text-align: right;">1058</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">AUTOINMUNE</td>
+<td style="text-align: left;">CELIAQUÍA</td>
+<td style="text-align: right;">27</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">AUTOINMUNE</td>
+<td style="text-align: left;">ENFERMEDAD DE GRAVES</td>
+<td style="text-align: right;">796</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">AUTOINMUNE</td>
+<td style="text-align: left;">LUPUS</td>
+<td style="text-align: right;">487</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">FLU</td>
+<td style="text-align: left;">GRIPE A</td>
+<td style="text-align: right;">629</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">FLU</td>
+<td style="text-align: left;">GRIPE B</td>
+<td style="text-align: right;">44</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">FLU</td>
+<td style="text-align: left;">GRIPE C</td>
+<td style="text-align: right;">1492</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">FLU</td>
+<td style="text-align: left;">GRIPE D</td>
+<td style="text-align: right;">3786</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">HEART</td>
+<td style="text-align: left;">ARTEROPATÍA CORONARIA</td>
+<td style="text-align: right;">3730</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">HEART</td>
+<td style="text-align: left;">MIOCARDIOPATÍA</td>
+<td style="text-align: right;">3639</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">OBESITY</td>
+<td style="text-align: left;">OBESIDAD</td>
+<td style="text-align: right;">4738</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">ONCOLOGY</td>
+<td style="text-align: left;">CÁNCER DE CORAZÓN</td>
+<td style="text-align: right;">4045</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">ONCOLOGY</td>
+<td style="text-align: left;">CANCER DE GLÁNDULA SALIVAL</td>
+<td style="text-align: right;">431</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">ONCOLOGY</td>
+<td style="text-align: left;">CANCER DE OIDO</td>
+<td style="text-align: right;">3561</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">ONCOLOGY</td>
+<td style="text-align: left;">CANCER NASAL</td>
+<td style="text-align: right;">4108</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div id="exr-8" class="theorem exercise">
+<p><span class="theorem-title"><strong>Ejercicio 8</strong></span> Dibujar el diagrama de barras de las especialidades. ¿Qué especialidad es la más frecuente? Dibujar también el diagrama de barras de las especialidades coloreando las barras según el equipo.</p>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-8-contents" aria-controls="callout-8" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Solución
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-8" class="callout-8-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<div class="cell">
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>df <span class="sc">|&gt;</span>  </span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> INDICACIÓN, <span class="at">fill =</span> SQUAD)) <span class="sc">+</span></span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_bar</span>()</span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="index_files/figure-html/unnamed-chunk-10-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div id="exr-9" class="theorem exercise">
+<p><span class="theorem-title"><strong>Ejercicio 9</strong></span> Dibujar el diagrama de barras con el número de visitas presenciales y virtuales de cada grupo. ¿Qué grupo ha tenido un mayor número de visitas presenciales? ¿Y de visitas virtuales?</p>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-9-contents" aria-controls="callout-9" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Solución
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-9" class="callout-9-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<div class="cell">
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>df <span class="sc">|&gt;</span></span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(SQUAD) <span class="sc">|&gt;</span></span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(</span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">Num_VisitaF2F =</span> <span class="fu">sum</span>(Num_VisitaF2F),</span>
+<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">Num_VisitaVirtual =</span> <span class="fu">sum</span>(Num_VisitaVirtual)</span>
+<span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">|&gt;</span> </span>
+<span id="cb14-7"><a href="#cb14-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pivot_longer</span>(<span class="at">cols =</span> <span class="fu">c</span>(Num_VisitaF2F, Num_VisitaVirtual), <span class="at">names_to =</span> <span class="st">"Tipo_Visita"</span>, <span class="at">values_to =</span> <span class="st">"Num_Visitas"</span>) <span class="sc">|&gt;</span></span>
+<span id="cb14-8"><a href="#cb14-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> SQUAD, <span class="at">y =</span> Num_Visitas, <span class="at">fill =</span> Tipo_Visita)) <span class="sc">+</span></span>
+<span id="cb14-9"><a href="#cb14-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_bar</span>(<span class="at">stat =</span> <span class="st">"identity"</span>)</span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="index_files/figure-html/unnamed-chunk-11-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div id="exr-10" class="theorem exercise">
+<p><span class="theorem-title"><strong>Ejercicio 10</strong></span> Dibujar un histograma del número de visitas a la página web de Roche para médicos, eliminando los médicos que no han visitado la página web.</p>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-10-contents" aria-controls="callout-10" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Solución
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-10" class="callout-10-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<div class="cell">
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>df <span class="sc">|&gt;</span> </span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(Num_RochePlus <span class="sc">&gt;</span> <span class="dv">0</span>) <span class="sc">|&gt;</span></span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> Num_RochePlus)) <span class="sc">+</span></span>
+<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_histogram</span>(<span class="at">col =</span> <span class="st">"white"</span>, <span class="at">fill =</span> <span class="st">"steelblue"</span>)</span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="index_files/figure-html/unnamed-chunk-12-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div id="exr-11" class="theorem exercise">
+<p><span class="theorem-title"><strong>Ejercicio 11</strong></span> Dibujar el diagrama de cajas del número de visitas a la página web de Roche para médicos, eliminando los médicos que no han visitado la página web.</p>
+<p>¿Existen datos atípicos? Eliminar el 5% de los datos atípicos más extremos y volver a dibujar el diagrama de cajas.</p>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-11-contents" aria-controls="callout-11" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Solución
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-11" class="callout-11-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<div class="cell">
+<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>df <span class="sc">|&gt;</span> </span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(Num_RochePlus <span class="sc">&gt;</span> <span class="dv">0</span>) <span class="sc">|&gt;</span></span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> Num_RochePlus)) <span class="sc">+</span></span>
+<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_boxplot</span>(<span class="at">fill =</span> <span class="st">"steelblue"</span>)</span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="index_files/figure-html/unnamed-chunk-13-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>df <span class="sc">|&gt;</span> </span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(Num_RochePlus <span class="sc">&gt;</span> <span class="dv">0</span>) <span class="sc">|&gt;</span></span>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(Num_RochePlus <span class="sc">&lt;</span> <span class="fu">quantile</span>(Num_RochePlus, <span class="fl">0.95</span>)) <span class="sc">|&gt;</span></span>
+<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> Num_RochePlus)) <span class="sc">+</span></span>
+<span id="cb17-5"><a href="#cb17-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_boxplot</span>(<span class="at">fill =</span> <span class="st">"steelblue"</span>)</span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="index_files/figure-html/unnamed-chunk-14-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div id="exr-12" class="theorem exercise">
+<p><span class="theorem-title"><strong>Ejercicio 12</strong></span> Dibujar el diagram de cajas del número de visitas a la página web de Roche para médicos, eliminando los médicos que no han visitado la página web y agrupando según el equipo. ¿Qué equipo tiene un mayor número de visitas a la página web?</p>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-12-contents" aria-controls="callout-12" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Solución
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-12" class="callout-12-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<div class="cell">
+<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a>df <span class="sc">|&gt;</span> </span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(Num_RochePlus <span class="sc">&gt;</span> <span class="dv">0</span>) <span class="sc">|&gt;</span></span>
+<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(Num_RochePlus <span class="sc">&lt;</span> <span class="fu">quantile</span>(Num_RochePlus, <span class="fl">0.95</span>)) <span class="sc">|&gt;</span></span>
+<span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> SQUAD, <span class="at">y =</span> Num_RochePlus, <span class="at">fill =</span> SQUAD)) <span class="sc">+</span></span>
+<span id="cb18-5"><a href="#cb18-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_boxplot</span>()</span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="index_files/figure-html/unnamed-chunk-15-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div id="exr-13" class="theorem exercise">
+<p><span class="theorem-title"><strong>Ejercicio 13</strong></span> Realizar un resumen descriptivo de las variables numéricas del conjunto de datos.</p>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-13-contents" aria-controls="callout-13" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Solución
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-13" class="callout-13-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<div class="cell">
+<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a>df <span class="sc">|&gt;</span></span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select_if</span>(is.numeric) <span class="sc">|&gt;</span> </span>
+<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">st</span>()</span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<table class="table table-sm table-striped small" data-quarto-postprocess="true">
+<caption>Summary Statistics</caption>
+<thead>
+<tr class="header">
+<th style="text-align: left;" data-quarto-table-cell-role="th">Variable</th>
+<th style="text-align: left;" data-quarto-table-cell-role="th">N</th>
+<th style="text-align: left;" data-quarto-table-cell-role="th">Mean</th>
+<th style="text-align: left;" data-quarto-table-cell-role="th">Std. Dev.</th>
+<th style="text-align: left;" data-quarto-table-cell-role="th">Min</th>
+<th style="text-align: left;" data-quarto-table-cell-role="th">Pctl. 25</th>
+<th style="text-align: left;" data-quarto-table-cell-role="th">Pctl. 75</th>
+<th style="text-align: left;" data-quarto-table-cell-role="th">Max</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">Num_VisitaF2F</td>
+<td style="text-align: left;">32748</td>
+<td style="text-align: left;">1.8</td>
+<td style="text-align: left;">2.1</td>
+<td style="text-align: left;">0</td>
+<td style="text-align: left;">0</td>
+<td style="text-align: left;">3</td>
+<td style="text-align: left;">19</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Num_EventoF2F</td>
+<td style="text-align: left;">32748</td>
+<td style="text-align: left;">0.39</td>
+<td style="text-align: left;">0.68</td>
+<td style="text-align: left;">0</td>
+<td style="text-align: left;">0</td>
+<td style="text-align: left;">1</td>
+<td style="text-align: left;">6</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Num_VisitaVirtual</td>
+<td style="text-align: left;">32748</td>
+<td style="text-align: left;">0.3</td>
+<td style="text-align: left;">0.85</td>
+<td style="text-align: left;">0</td>
+<td style="text-align: left;">0</td>
+<td style="text-align: left;">0</td>
+<td style="text-align: left;">14</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Num_EcampOPEN</td>
+<td style="text-align: left;">32748</td>
+<td style="text-align: left;">0.69</td>
+<td style="text-align: left;">1.3</td>
+<td style="text-align: left;">0</td>
+<td style="text-align: left;">0</td>
+<td style="text-align: left;">1</td>
+<td style="text-align: left;">10</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Num_EcampSENT</td>
+<td style="text-align: left;">32748</td>
+<td style="text-align: left;">1</td>
+<td style="text-align: left;">1.8</td>
+<td style="text-align: left;">0</td>
+<td style="text-align: left;">0</td>
+<td style="text-align: left;">2</td>
+<td style="text-align: left;">12</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Num_EventoVirt</td>
+<td style="text-align: left;">32748</td>
+<td style="text-align: left;">0.07</td>
+<td style="text-align: left;">0.28</td>
+<td style="text-align: left;">0</td>
+<td style="text-align: left;">0</td>
+<td style="text-align: left;">0</td>
+<td style="text-align: left;">3</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Num_NLCLICK</td>
+<td style="text-align: left;">32748</td>
+<td style="text-align: left;">0.018</td>
+<td style="text-align: left;">0.2</td>
+<td style="text-align: left;">0</td>
+<td style="text-align: left;">0</td>
+<td style="text-align: left;">0</td>
+<td style="text-align: left;">8</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Num_NLSENT</td>
+<td style="text-align: left;">32748</td>
+<td style="text-align: left;">0.28</td>
+<td style="text-align: left;">1.3</td>
+<td style="text-align: left;">0</td>
+<td style="text-align: left;">0</td>
+<td style="text-align: left;">0</td>
+<td style="text-align: left;">14</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Num_Elearning</td>
+<td style="text-align: left;">32748</td>
+<td style="text-align: left;">0</td>
+<td style="text-align: left;">0</td>
+<td style="text-align: left;">0</td>
+<td style="text-align: left;">0</td>
+<td style="text-align: left;">0</td>
+<td style="text-align: left;">0</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Num_RochePlus</td>
+<td style="text-align: left;">32748</td>
+<td style="text-align: left;">0.57</td>
+<td style="text-align: left;">3</td>
+<td style="text-align: left;">0</td>
+<td style="text-align: left;">0</td>
+<td style="text-align: left;">0</td>
+<td style="text-align: left;">130</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">total_visitas</td>
+<td style="text-align: left;">32748</td>
+<td style="text-align: left;">2.1</td>
+<td style="text-align: left;">2.3</td>
+<td style="text-align: left;">0</td>
+<td style="text-align: left;">0</td>
+<td style="text-align: left;">3</td>
+<td style="text-align: left;">27</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">total_interacciones</td>
+<td style="text-align: left;">32748</td>
+<td style="text-align: left;">3.9</td>
+<td style="text-align: left;">4.1</td>
+<td style="text-align: left;">1</td>
+<td style="text-align: left;">1</td>
+<td style="text-align: left;">5</td>
+<td style="text-align: left;">143</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">total_criterios</td>
+<td style="text-align: left;">32748</td>
+<td style="text-align: left;">1.6</td>
+<td style="text-align: left;">0.89</td>
+<td style="text-align: left;">0</td>
+<td style="text-align: left;">1</td>
+<td style="text-align: left;">2</td>
+<td style="text-align: left;">7</td>
+</tr>
+</tbody>
+</table>
+
+
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div id="exr-14" class="theorem exercise">
+<p><span class="theorem-title"><strong>Ejercicio 14</strong></span> Realizar un resumen descriptivo con la media y la desviación típica del número de visitas presenciales y virtuales agrupadas por equipo.</p>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-14-contents" aria-controls="callout-14" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Solución
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-14" class="callout-14-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<div class="cell">
+<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="fu">st</span>(df, <span class="at">vars =</span> <span class="fu">c</span>(<span class="st">"Num_VisitaF2F"</span>, <span class="st">"Num_VisitaVirtual"</span>), <span class="at">group =</span> <span class="st">"SQUAD"</span>, <span class="at">summ =</span> <span class="fu">c</span>(<span class="st">'mean(x)'</span>, <span class="st">'sd(x)'</span>),</span>
+<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a><span class="at">summ.names =</span> <span class="fu">c</span>(<span class="st">"Media"</span>, <span class="st">"Desv. típica"</span>))</span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<table class="table table-sm table-striped small" data-quarto-postprocess="true">
+<caption>Summary Statistics</caption>
+<colgroup>
+<col style="width: 7%">
+<col style="width: 7%">
+<col style="width: 7%">
+<col style="width: 7%">
+<col style="width: 7%">
+<col style="width: 7%">
+<col style="width: 7%">
+<col style="width: 7%">
+<col style="width: 7%">
+<col style="width: 7%">
+<col style="width: 7%">
+<col style="width: 7%">
+<col style="width: 7%">
+</colgroup>
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th" style="text-align: center; border-bottom: hidden; padding-bottom: 0; padding-left: 3px; padding-right: 3px;"><div style="border-bottom: 1px solid #ddd; padding-bottom: 5px; ">
+SQUAD
+</div></th>
+<th colspan="2" data-quarto-table-cell-role="th" style="text-align: center; border-bottom: hidden; padding-bottom: 0; padding-left: 3px; padding-right: 3px;"><div style="border-bottom: 1px solid #ddd; padding-bottom: 5px; ">
+ALOPECIA
+</div></th>
+<th colspan="2" data-quarto-table-cell-role="th" style="text-align: center; border-bottom: hidden; padding-bottom: 0; padding-left: 3px; padding-right: 3px;"><div style="border-bottom: 1px solid #ddd; padding-bottom: 5px; ">
+AUTOINMUNE
+</div></th>
+<th colspan="2" data-quarto-table-cell-role="th" style="text-align: center; border-bottom: hidden; padding-bottom: 0; padding-left: 3px; padding-right: 3px;"><div style="border-bottom: 1px solid #ddd; padding-bottom: 5px; ">
+FLU
+</div></th>
+<th colspan="2" data-quarto-table-cell-role="th" style="text-align: center; border-bottom: hidden; padding-bottom: 0; padding-left: 3px; padding-right: 3px;"><div style="border-bottom: 1px solid #ddd; padding-bottom: 5px; ">
+HEART
+</div></th>
+<th colspan="2" data-quarto-table-cell-role="th" style="text-align: center; border-bottom: hidden; padding-bottom: 0; padding-left: 3px; padding-right: 3px;"><div style="border-bottom: 1px solid #ddd; padding-bottom: 5px; ">
+OBESITY
+</div></th>
+<th colspan="2" data-quarto-table-cell-role="th" style="text-align: center; border-bottom: hidden; padding-bottom: 0; padding-left: 3px; padding-right: 3px;"><div style="border-bottom: 1px solid #ddd; padding-bottom: 5px; ">
+ONCOLOGY
+</div></th>
+</tr>
+<tr class="odd">
+<th style="text-align: left;" data-quarto-table-cell-role="th">Variable</th>
+<th style="text-align: left;" data-quarto-table-cell-role="th">Media</th>
+<th style="text-align: left;" data-quarto-table-cell-role="th">Desv. típica</th>
+<th style="text-align: left;" data-quarto-table-cell-role="th">Media</th>
+<th style="text-align: left;" data-quarto-table-cell-role="th">Desv. típica</th>
+<th style="text-align: left;" data-quarto-table-cell-role="th">Media</th>
+<th style="text-align: left;" data-quarto-table-cell-role="th">Desv. típica</th>
+<th style="text-align: left;" data-quarto-table-cell-role="th">Media</th>
+<th style="text-align: left;" data-quarto-table-cell-role="th">Desv. típica</th>
+<th style="text-align: left;" data-quarto-table-cell-role="th">Media</th>
+<th style="text-align: left;" data-quarto-table-cell-role="th">Desv. típica</th>
+<th style="text-align: left;" data-quarto-table-cell-role="th">Media</th>
+<th style="text-align: left;" data-quarto-table-cell-role="th">Desv. típica</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">Num_VisitaF2F</td>
+<td style="text-align: left;">1.6</td>
+<td style="text-align: left;">1.5</td>
+<td style="text-align: left;">0.034</td>
+<td style="text-align: left;">0.22</td>
+<td style="text-align: left;">1.3</td>
+<td style="text-align: left;">1.9</td>
+<td style="text-align: left;">2.4</td>
+<td style="text-align: left;">2.3</td>
+<td style="text-align: left;">2.3</td>
+<td style="text-align: left;">2.1</td>
+<td style="text-align: left;">1.8</td>
+<td style="text-align: left;">2</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Num_VisitaVirtual</td>
+<td style="text-align: left;">0.059</td>
+<td style="text-align: left;">0.31</td>
+<td style="text-align: left;">0.0061</td>
+<td style="text-align: left;">0.087</td>
+<td style="text-align: left;">0.13</td>
+<td style="text-align: left;">0.5</td>
+<td style="text-align: left;">0.28</td>
+<td style="text-align: left;">0.9</td>
+<td style="text-align: left;">0.34</td>
+<td style="text-align: left;">0.96</td>
+<td style="text-align: left;">0.42</td>
+<td style="text-align: left;">0.96</td>
+</tr>
+</tbody>
+</table>
+
+
+</div>
+</div>
+</div>
+<p>Otra forma.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a>df <span class="sc">|&gt;</span></span>
+<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(SQUAD) <span class="sc">|&gt;</span></span>
+<span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select_if</span>(is.numeric) <span class="sc">|&gt;</span></span>
+<span id="cb21-4"><a href="#cb21-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="fu">across</span>(<span class="fu">everything</span>(), <span class="fu">list</span>(<span class="at">mean =</span> mean, <span class="at">sd =</span> sd)) ) <span class="sc">|&gt;</span> </span>
+<span id="cb21-5"><a href="#cb21-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">kable</span>()</span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<table class="table table-sm table-striped small">
+<colgroup>
+<col style="width: 2%">
+<col style="width: 3%">
+<col style="width: 3%">
+<col style="width: 3%">
+<col style="width: 3%">
+<col style="width: 4%">
+<col style="width: 4%">
+<col style="width: 3%">
+<col style="width: 3%">
+<col style="width: 3%">
+<col style="width: 3%">
+<col style="width: 4%">
+<col style="width: 3%">
+<col style="width: 3%">
+<col style="width: 3%">
+<col style="width: 3%">
+<col style="width: 2%">
+<col style="width: 3%">
+<col style="width: 3%">
+<col style="width: 3%">
+<col style="width: 3%">
+<col style="width: 3%">
+<col style="width: 3%">
+<col style="width: 5%">
+<col style="width: 4%">
+<col style="width: 4%">
+<col style="width: 3%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;">SQUAD</th>
+<th style="text-align: right;">Num_VisitaF2F_mean</th>
+<th style="text-align: right;">Num_VisitaF2F_sd</th>
+<th style="text-align: right;">Num_EventoF2F_mean</th>
+<th style="text-align: right;">Num_EventoF2F_sd</th>
+<th style="text-align: right;">Num_VisitaVirtual_mean</th>
+<th style="text-align: right;">Num_VisitaVirtual_sd</th>
+<th style="text-align: right;">Num_EcampOPEN_mean</th>
+<th style="text-align: right;">Num_EcampOPEN_sd</th>
+<th style="text-align: right;">Num_EcampSENT_mean</th>
+<th style="text-align: right;">Num_EcampSENT_sd</th>
+<th style="text-align: right;">Num_EventoVirt_mean</th>
+<th style="text-align: right;">Num_EventoVirt_sd</th>
+<th style="text-align: right;">Num_NLCLICK_mean</th>
+<th style="text-align: right;">Num_NLCLICK_sd</th>
+<th style="text-align: right;">Num_NLSENT_mean</th>
+<th style="text-align: right;">Num_NLSENT_sd</th>
+<th style="text-align: right;">Num_Elearning_mean</th>
+<th style="text-align: right;">Num_Elearning_sd</th>
+<th style="text-align: right;">Num_RochePlus_mean</th>
+<th style="text-align: right;">Num_RochePlus_sd</th>
+<th style="text-align: right;">total_visitas_mean</th>
+<th style="text-align: right;">total_visitas_sd</th>
+<th style="text-align: right;">total_interacciones_mean</th>
+<th style="text-align: right;">total_interacciones_sd</th>
+<th style="text-align: right;">total_criterios_mean</th>
+<th style="text-align: right;">total_criterios_sd</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">ALOPECIA</td>
+<td style="text-align: right;">1.5740891</td>
+<td style="text-align: right;">1.4808258</td>
+<td style="text-align: right;">0.0348178</td>
+<td style="text-align: right;">0.1833924</td>
+<td style="text-align: right;">0.0591093</td>
+<td style="text-align: right;">0.3075034</td>
+<td style="text-align: right;">0.2890688</td>
+<td style="text-align: right;">0.5138301</td>
+<td style="text-align: right;">0.3417004</td>
+<td style="text-align: right;">0.5720406</td>
+<td style="text-align: right;">0.0024291</td>
+<td style="text-align: right;">0.0492464</td>
+<td style="text-align: right;">0.0040486</td>
+<td style="text-align: right;">0.0635253</td>
+<td style="text-align: right;">0.1085020</td>
+<td style="text-align: right;">0.5382160</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0.0914980</td>
+<td style="text-align: right;">0.7405048</td>
+<td style="text-align: right;">1.6331984</td>
+<td style="text-align: right;">1.5183478</td>
+<td style="text-align: right;">2.055061</td>
+<td style="text-align: right;">1.528830</td>
+<td style="text-align: right;">1.107692</td>
+<td style="text-align: right;">0.4012510</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">AUTOINMUNE</td>
+<td style="text-align: right;">0.0335878</td>
+<td style="text-align: right;">0.2185481</td>
+<td style="text-align: right;">0.5152672</td>
+<td style="text-align: right;">0.7615646</td>
+<td style="text-align: right;">0.0061069</td>
+<td style="text-align: right;">0.0871900</td>
+<td style="text-align: right;">1.6595420</td>
+<td style="text-align: right;">2.0015570</td>
+<td style="text-align: right;">2.4541985</td>
+<td style="text-align: right;">2.6546516</td>
+<td style="text-align: right;">0.1007634</td>
+<td style="text-align: right;">0.3135582</td>
+<td style="text-align: right;">0.0572519</td>
+<td style="text-align: right;">0.3896151</td>
+<td style="text-align: right;">0.6175573</td>
+<td style="text-align: right;">1.8813946</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">1.4282443</td>
+<td style="text-align: right;">4.8082209</td>
+<td style="text-align: right;">0.0396947</td>
+<td style="text-align: right;">0.2532235</td>
+<td style="text-align: right;">3.800763</td>
+<td style="text-align: right;">5.443578</td>
+<td style="text-align: right;">1.319084</td>
+<td style="text-align: right;">0.7136254</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">FLU</td>
+<td style="text-align: right;">1.2843220</td>
+<td style="text-align: right;">1.8652473</td>
+<td style="text-align: right;">0.2663418</td>
+<td style="text-align: right;">0.5371647</td>
+<td style="text-align: right;">0.1303983</td>
+<td style="text-align: right;">0.5029010</td>
+<td style="text-align: right;">0.6504789</td>
+<td style="text-align: right;">0.9302567</td>
+<td style="text-align: right;">0.9258948</td>
+<td style="text-align: right;">1.1294618</td>
+<td style="text-align: right;">0.0892287</td>
+<td style="text-align: right;">0.3121138</td>
+<td style="text-align: right;">0.0168039</td>
+<td style="text-align: right;">0.1711649</td>
+<td style="text-align: right;">0.2162662</td>
+<td style="text-align: right;">0.8501770</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0.4209377</td>
+<td style="text-align: right;">2.1849966</td>
+<td style="text-align: right;">1.4147202</td>
+<td style="text-align: right;">1.9849209</td>
+<td style="text-align: right;">2.858511</td>
+<td style="text-align: right;">3.010091</td>
+<td style="text-align: right;">1.374055</td>
+<td style="text-align: right;">0.7309892</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">HEART</td>
+<td style="text-align: right;">2.4160673</td>
+<td style="text-align: right;">2.2533103</td>
+<td style="text-align: right;">0.3963903</td>
+<td style="text-align: right;">0.6707743</td>
+<td style="text-align: right;">0.2847062</td>
+<td style="text-align: right;">0.9011007</td>
+<td style="text-align: right;">0.3350522</td>
+<td style="text-align: right;">0.7066994</td>
+<td style="text-align: right;">0.4369657</td>
+<td style="text-align: right;">0.8149135</td>
+<td style="text-align: right;">0.0310761</td>
+<td style="text-align: right;">0.1856276</td>
+<td style="text-align: right;">0.0029855</td>
+<td style="text-align: right;">0.0545616</td>
+<td style="text-align: right;">0.0346044</td>
+<td style="text-align: right;">0.3224701</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0.0990636</td>
+<td style="text-align: right;">1.0741815</td>
+<td style="text-align: right;">2.7007735</td>
+<td style="text-align: right;">2.4960665</td>
+<td style="text-align: right;">3.565341</td>
+<td style="text-align: right;">2.963284</td>
+<td style="text-align: right;">1.557335</td>
+<td style="text-align: right;">0.7428656</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">OBESITY</td>
+<td style="text-align: right;">2.3020262</td>
+<td style="text-align: right;">2.0762741</td>
+<td style="text-align: right;">0.4681300</td>
+<td style="text-align: right;">0.7799590</td>
+<td style="text-align: right;">0.3387505</td>
+<td style="text-align: right;">0.9621621</td>
+<td style="text-align: right;">0.2978050</td>
+<td style="text-align: right;">0.7332389</td>
+<td style="text-align: right;">0.4033347</td>
+<td style="text-align: right;">0.8737278</td>
+<td style="text-align: right;">0.0493879</td>
+<td style="text-align: right;">0.2870961</td>
+<td style="text-align: right;">0.0143520</td>
+<td style="text-align: right;">0.1650379</td>
+<td style="text-align: right;">0.2087379</td>
+<td style="text-align: right;">0.7940243</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0.4535669</td>
+<td style="text-align: right;">2.1604562</td>
+<td style="text-align: right;">2.6407767</td>
+<td style="text-align: right;">2.3379550</td>
+<td style="text-align: right;">3.924019</td>
+<td style="text-align: right;">3.600502</td>
+<td style="text-align: right;">1.647320</td>
+<td style="text-align: right;">0.8753504</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">ONCOLOGY</td>
+<td style="text-align: right;">1.7717579</td>
+<td style="text-align: right;">1.9844445</td>
+<td style="text-align: right;">0.4410045</td>
+<td style="text-align: right;">0.6996129</td>
+<td style="text-align: right;">0.4247015</td>
+<td style="text-align: right;">0.9603207</td>
+<td style="text-align: right;">1.0045286</td>
+<td style="text-align: right;">1.7137635</td>
+<td style="text-align: right;">1.5842734</td>
+<td style="text-align: right;">2.3142808</td>
+<td style="text-align: right;">0.0950185</td>
+<td style="text-align: right;">0.3018319</td>
+<td style="text-align: right;">0.0261836</td>
+<td style="text-align: right;">0.2530567</td>
+<td style="text-align: right;">0.4617538</td>
+<td style="text-align: right;">1.7981675</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0.9420338</td>
+<td style="text-align: right;">4.0656786</td>
+<td style="text-align: right;">2.1964594</td>
+<td style="text-align: right;">2.3854737</td>
+<td style="text-align: right;">4.705228</td>
+<td style="text-align: right;">5.119076</td>
+<td style="text-align: right;">1.925895</td>
+<td style="text-align: right;">1.0075189</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div id="exr-14" class="theorem exercise">
+<p><span class="theorem-title"><strong>Ejercicio 15</strong></span> Dibujar el diagrama de dispersión entre el número de correos electrónicos enviados y el número de correos electrónicos abiertos. ¿Existe alguna relación entre estas dos variables?</p>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-15-contents" aria-controls="callout-15" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Solución
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-15" class="callout-15-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<div class="cell">
+<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a>df <span class="sc">|&gt;</span> </span>
+<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> Num_EcampSENT, <span class="at">y =</span> Num_EcampOPEN)) <span class="sc">+</span></span>
+<span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>()</span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="index_files/figure-html/unnamed-chunk-19-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div id="exr-15" class="theorem exercise">
+<p><span class="theorem-title"><strong>Ejercicio 16</strong></span> Dibujar los diagramas de dispersión de todas las variables numéricas del conjunto de datos. ¿Existe alguna relación entre las variables?</p>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-16-contents" aria-controls="callout-16" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Solución
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-16" class="callout-16-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<div class="cell">
+<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(GGally)</span>
+<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a>df <span class="sc">|&gt;</span> </span>
+<span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(Num_EcampOPEN <span class="sc">&gt;</span> <span class="dv">0</span>) <span class="sc">|&gt;</span></span>
+<span id="cb23-4"><a href="#cb23-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select_if</span>(is.numeric) <span class="sc">|&gt;</span> </span>
+<span id="cb23-5"><a href="#cb23-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggpairs</span>()</span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="index_files/figure-html/unnamed-chunk-20-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
 </div>
 </div>
 </div>
@@ -150,6 +1767,150 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     }
   }
   toggleBodyColorPrimary();  
+  const disableStylesheet = (stylesheets) => {
+    for (let i=0; i < stylesheets.length; i++) {
+      const stylesheet = stylesheets[i];
+      stylesheet.rel = 'prefetch';
+    }
+  }
+  const enableStylesheet = (stylesheets) => {
+    for (let i=0; i < stylesheets.length; i++) {
+      const stylesheet = stylesheets[i];
+      stylesheet.rel = 'stylesheet';
+    }
+  }
+  const manageTransitions = (selector, allowTransitions) => {
+    const els = window.document.querySelectorAll(selector);
+    for (let i=0; i < els.length; i++) {
+      const el = els[i];
+      if (allowTransitions) {
+        el.classList.remove('notransition');
+      } else {
+        el.classList.add('notransition');
+      }
+    }
+  }
+  const toggleGiscusIfUsed = (isAlternate, darkModeDefault) => {
+    const baseTheme = document.querySelector('#giscus-base-theme')?.value ?? 'light';
+    const alternateTheme = document.querySelector('#giscus-alt-theme')?.value ?? 'dark';
+    let newTheme = '';
+    if(darkModeDefault) {
+      newTheme = isAlternate ? baseTheme : alternateTheme;
+    } else {
+      newTheme = isAlternate ? alternateTheme : baseTheme;
+    }
+    const changeGiscusTheme = () => {
+      // From: https://github.com/giscus/giscus/issues/336
+      const sendMessage = (message) => {
+        const iframe = document.querySelector('iframe.giscus-frame');
+        if (!iframe) return;
+        iframe.contentWindow.postMessage({ giscus: message }, 'https://giscus.app');
+      }
+      sendMessage({
+        setConfig: {
+          theme: newTheme
+        }
+      });
+    }
+    const isGiscussLoaded = window.document.querySelector('iframe.giscus-frame') !== null;
+    if (isGiscussLoaded) {
+      changeGiscusTheme();
+    }
+  }
+  const toggleColorMode = (alternate) => {
+    // Switch the stylesheets
+    const alternateStylesheets = window.document.querySelectorAll('link.quarto-color-scheme.quarto-color-alternate');
+    manageTransitions('#quarto-margin-sidebar .nav-link', false);
+    if (alternate) {
+      enableStylesheet(alternateStylesheets);
+      for (const sheetNode of alternateStylesheets) {
+        if (sheetNode.id === "quarto-bootstrap") {
+          toggleBodyColorMode(sheetNode);
+        }
+      }
+    } else {
+      disableStylesheet(alternateStylesheets);
+      toggleBodyColorPrimary();
+    }
+    manageTransitions('#quarto-margin-sidebar .nav-link', true);
+    // Switch the toggles
+    const toggles = window.document.querySelectorAll('.quarto-color-scheme-toggle');
+    for (let i=0; i < toggles.length; i++) {
+      const toggle = toggles[i];
+      if (toggle) {
+        if (alternate) {
+          toggle.classList.add("alternate");     
+        } else {
+          toggle.classList.remove("alternate");
+        }
+      }
+    }
+    // Hack to workaround the fact that safari doesn't
+    // properly recolor the scrollbar when toggling (#1455)
+    if (navigator.userAgent.indexOf('Safari') > 0 && navigator.userAgent.indexOf('Chrome') == -1) {
+      manageTransitions("body", false);
+      window.scrollTo(0, 1);
+      setTimeout(() => {
+        window.scrollTo(0, 0);
+        manageTransitions("body", true);
+      }, 40);  
+    }
+  }
+  const isFileUrl = () => { 
+    return window.location.protocol === 'file:';
+  }
+  const hasAlternateSentinel = () => {  
+    let styleSentinel = getColorSchemeSentinel();
+    if (styleSentinel !== null) {
+      return styleSentinel === "alternate";
+    } else {
+      return false;
+    }
+  }
+  const setStyleSentinel = (alternate) => {
+    const value = alternate ? "alternate" : "default";
+    if (!isFileUrl()) {
+      window.localStorage.setItem("quarto-color-scheme", value);
+    } else {
+      localAlternateSentinel = value;
+    }
+  }
+  const getColorSchemeSentinel = () => {
+    if (!isFileUrl()) {
+      const storageValue = window.localStorage.getItem("quarto-color-scheme");
+      return storageValue != null ? storageValue : localAlternateSentinel;
+    } else {
+      return localAlternateSentinel;
+    }
+  }
+  const darkModeDefault = false;
+  let localAlternateSentinel = darkModeDefault ? 'alternate' : 'default';
+  // Dark / light mode switch
+  window.quartoToggleColorScheme = () => {
+    // Read the current dark / light value 
+    let toAlternate = !hasAlternateSentinel();
+    toggleColorMode(toAlternate);
+    setStyleSentinel(toAlternate);
+    toggleGiscusIfUsed(toAlternate, darkModeDefault);
+  };
+  // Ensure there is a toggle, if there isn't float one in the top right
+  if (window.document.querySelector('.quarto-color-scheme-toggle') === null) {
+    const a = window.document.createElement('a');
+    a.classList.add('top-right');
+    a.classList.add('quarto-color-scheme-toggle');
+    a.href = "";
+    a.onclick = function() { try { window.quartoToggleColorScheme(); } catch {} return false; };
+    const i = window.document.createElement("i");
+    i.classList.add('bi');
+    a.appendChild(i);
+    window.document.body.appendChild(a);
+  }
+  // Switch to dark mode if need be
+  if (hasAlternateSentinel()) {
+    toggleColorMode(true);
+  } else {
+    toggleColorMode(false);
+  }
   const icon = "";
   const anchorJS = new window.AnchorJS();
   anchorJS.options = {
