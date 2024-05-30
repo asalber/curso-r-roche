@@ -754,7 +754,7 @@ Solución
 </div>
 </div>
 <div id="exr-5" class="theorem exercise">
-<p><span class="theorem-title"><strong>Ejercicio 5</strong></span> Filtrar el conjunto de datos para quedarse con los médicos expertos en oncología de la zona centro que han sido visitados al menos dos veces. ¿Cuántos médicos cumplen con estas condiciones?</p>
+<p><span class="theorem-title"><strong>Ejercicio 5</strong></span> Seleccionar las variables <code>ZONA</code>, <code>ID_MÉDICO</code> y todas variables numéricas, y pivotar las columnas numéricas del data frame resultante.</p>
 <div class="callout callout-style-default callout-tip callout-titled">
 <div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-5-contents" aria-controls="callout-5" aria-expanded="false" aria-label="Toggle callout">
 <div class="callout-icon-container">
@@ -768,12 +768,60 @@ Solución
 <div id="callout-5" class="callout-5-contents callout-collapse collapse">
 <div class="callout-body-container callout-body">
 <div class="cell">
-<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>df_filtrado <span class="ot">&lt;-</span> df <span class="sc">|&gt;</span> </span>
-<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(ZONA <span class="sc">==</span> <span class="st">"CENTRO"</span>, SQUAD <span class="sc">==</span> <span class="st">"ONCOLOGY"</span>, ES_TAE <span class="sc">==</span> <span class="st">"SI"</span>, total_visitas <span class="sc">&gt;=</span> <span class="dv">2</span>)</span>
-<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a><span class="fu">nrow</span>(df_filtrado)</span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>[1] 567</code></pre>
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>df <span class="sc">|&gt;</span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(ZONA, ID_MÉDICO, <span class="fu">starts_with</span>(<span class="st">"Num_"</span>)) <span class="sc">|&gt;</span></span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pivot_longer</span>(<span class="at">cols =</span> <span class="fu">starts_with</span>(<span class="st">"Num_"</span>), <span class="at">names_to =</span> <span class="st">"Interacción"</span>, <span class="at">values_to =</span> <span class="st">"Veces"</span>) <span class="sc">|&gt;</span></span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">head</span>() <span class="sc">|&gt;</span></span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">kable</span>()</span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<table class="table table-sm table-striped small">
+<thead>
+<tr class="header">
+<th style="text-align: left;">ZONA</th>
+<th style="text-align: left;">ID_MÉDICO</th>
+<th style="text-align: left;">Interacción</th>
+<th style="text-align: right;">Veces</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">CENTRO</td>
+<td style="text-align: left;">001690000339tz7AAA</td>
+<td style="text-align: left;">Num_VisitaF2F</td>
+<td style="text-align: right;">3</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">CENTRO</td>
+<td style="text-align: left;">001690000339tz7AAA</td>
+<td style="text-align: left;">Num_EventoF2F</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">CENTRO</td>
+<td style="text-align: left;">001690000339tz7AAA</td>
+<td style="text-align: left;">Num_VisitaVirtual</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">CENTRO</td>
+<td style="text-align: left;">001690000339tz7AAA</td>
+<td style="text-align: left;">Num_EcampOPEN</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">CENTRO</td>
+<td style="text-align: left;">001690000339tz7AAA</td>
+<td style="text-align: left;">Num_EcampSENT</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">CENTRO</td>
+<td style="text-align: left;">001690000339tz7AAA</td>
+<td style="text-align: left;">Num_EventoVirt</td>
+<td style="text-align: right;">0</td>
+</tr>
+</tbody>
+</table>
 </div>
 </div>
 </div>
@@ -781,7 +829,7 @@ Solución
 </div>
 </div>
 <div id="exr-6" class="theorem exercise">
-<p><span class="theorem-title"><strong>Ejercicio 6</strong></span> Eliminar de la base de datos los médicos que no han tenido ninguna interacción. ¿Cuántos médicos quedan en la base de datos?</p>
+<p><span class="theorem-title"><strong>Ejercicio 6</strong></span> Filtrar el conjunto de datos para quedarse con los médicos expertos en oncología de la zona centro que han sido visitados al menos dos veces. ¿Cuántos médicos cumplen con estas condiciones?</p>
 <div class="callout callout-style-default callout-tip callout-titled">
 <div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-6-contents" aria-controls="callout-6" aria-expanded="false" aria-label="Toggle callout">
 <div class="callout-icon-container">
@@ -795,12 +843,12 @@ Solución
 <div id="callout-6" class="callout-6-contents callout-collapse collapse">
 <div class="callout-body-container callout-body">
 <div class="cell">
-<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>df <span class="ot">&lt;-</span> df <span class="sc">|&gt;</span> </span>
-<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(total_interacciones <span class="sc">&gt;</span> <span class="dv">0</span>)</span>
-<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a><span class="fu">nrow</span>(df)</span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>df_filtrado <span class="ot">&lt;-</span> df <span class="sc">|&gt;</span> </span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(ZONA <span class="sc">==</span> <span class="st">"CENTRO"</span>, SQUAD <span class="sc">==</span> <span class="st">"ONCOLOGY"</span>, ES_TAE <span class="sc">==</span> <span class="st">"SI"</span>, total_visitas <span class="sc">&gt;=</span> <span class="dv">2</span>)</span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a><span class="fu">nrow</span>(df_filtrado)</span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>[1] 32748</code></pre>
+<pre><code>[1] 567</code></pre>
 </div>
 </div>
 </div>
@@ -808,7 +856,7 @@ Solución
 </div>
 </div>
 <div id="exr-7" class="theorem exercise">
-<p><span class="theorem-title"><strong>Ejercicio 7</strong></span> Mostrar la tabla de frecuencias de los equipos (squad). Mostrar también la tabla de frecuencias de las especialidades agrupadas por equipos.</p>
+<p><span class="theorem-title"><strong>Ejercicio 7</strong></span> Eliminar de la base de datos los médicos que no han tenido ninguna interacción. ¿Cuántos médicos quedan en la base de datos?</p>
 <div class="callout callout-style-default callout-tip callout-titled">
 <div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-7-contents" aria-controls="callout-7" aria-expanded="false" aria-label="Toggle callout">
 <div class="callout-icon-container">
@@ -822,9 +870,36 @@ Solución
 <div id="callout-7" class="callout-7-contents callout-collapse collapse">
 <div class="callout-body-container callout-body">
 <div class="cell">
-<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>df <span class="sc">|&gt;</span> </span>
-<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">count</span>(SQUAD) <span class="sc">|&gt;</span> </span>
-<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">kable</span>()</span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>df <span class="ot">&lt;-</span> df <span class="sc">|&gt;</span> </span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(total_interacciones <span class="sc">&gt;</span> <span class="dv">0</span>)</span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a><span class="fu">nrow</span>(df)</span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 32748</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div id="exr-8" class="theorem exercise">
+<p><span class="theorem-title"><strong>Ejercicio 8</strong></span> Mostrar la tabla de frecuencias de los equipos (squad). Mostrar también la tabla de frecuencias de las especialidades agrupadas por equipos.</p>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-8-contents" aria-controls="callout-8" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Solución
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-8" class="callout-8-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<div class="cell">
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>df <span class="sc">|&gt;</span> </span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">count</span>(SQUAD) <span class="sc">|&gt;</span> </span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">kable</span>()</span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <table class="table table-sm table-striped small">
 <thead>
@@ -863,9 +938,9 @@ Solución
 </div>
 </div>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>df <span class="sc">|&gt;</span> </span>
-<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">count</span>(SQUAD, INDICACIÓN) <span class="sc">|&gt;</span> </span>
-<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">kable</span>()</span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>df <span class="sc">|&gt;</span> </span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">count</span>(SQUAD, INDICACIÓN) <span class="sc">|&gt;</span> </span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">kable</span>()</span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <table class="table table-sm table-striped small">
 <thead>
@@ -964,38 +1039,8 @@ Solución
 </div>
 </div>
 </div>
-<div id="exr-8" class="theorem exercise">
-<p><span class="theorem-title"><strong>Ejercicio 8</strong></span> Dibujar el diagrama de barras de las especialidades. ¿Qué especialidad es la más frecuente? Dibujar también el diagrama de barras de las especialidades coloreando las barras según el equipo.</p>
-<div class="callout callout-style-default callout-tip callout-titled">
-<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-8-contents" aria-controls="callout-8" aria-expanded="false" aria-label="Toggle callout">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-title-container flex-fill">
-Solución
-</div>
-<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
-</div>
-<div id="callout-8" class="callout-8-contents callout-collapse collapse">
-<div class="callout-body-container callout-body">
-<div class="cell">
-<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>df <span class="sc">|&gt;</span>  </span>
-<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> INDICACIÓN, <span class="at">fill =</span> SQUAD)) <span class="sc">+</span></span>
-<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_bar</span>()</span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output-display">
-<div>
-<figure class="figure">
-<p><img src="index_files/figure-html/unnamed-chunk-10-1.png" class="img-fluid figure-img" width="672"></p>
-</figure>
-</div>
-</div>
-</div>
-</div>
-</div>
-</div>
-</div>
 <div id="exr-9" class="theorem exercise">
-<p><span class="theorem-title"><strong>Ejercicio 9</strong></span> Dibujar el diagrama de barras con el número de visitas presenciales y virtuales de cada grupo. ¿Qué grupo ha tenido un mayor número de visitas presenciales? ¿Y de visitas virtuales?</p>
+<p><span class="theorem-title"><strong>Ejercicio 9</strong></span> Dibujar el diagrama de barras de las especialidades. ¿Qué especialidad es la más frecuente? Dibujar también el diagrama de barras de las especialidades coloreando las barras según el equipo.</p>
 <div class="callout callout-style-default callout-tip callout-titled">
 <div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-9-contents" aria-controls="callout-9" aria-expanded="false" aria-label="Toggle callout">
 <div class="callout-icon-container">
@@ -1009,15 +1054,9 @@ Solución
 <div id="callout-9" class="callout-9-contents callout-collapse collapse">
 <div class="callout-body-container callout-body">
 <div class="cell">
-<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>df <span class="sc">|&gt;</span></span>
-<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(SQUAD) <span class="sc">|&gt;</span></span>
-<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(</span>
-<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">Num_VisitaF2F =</span> <span class="fu">sum</span>(Num_VisitaF2F),</span>
-<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">Num_VisitaVirtual =</span> <span class="fu">sum</span>(Num_VisitaVirtual)</span>
-<span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">|&gt;</span> </span>
-<span id="cb14-7"><a href="#cb14-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pivot_longer</span>(<span class="at">cols =</span> <span class="fu">c</span>(Num_VisitaF2F, Num_VisitaVirtual), <span class="at">names_to =</span> <span class="st">"Tipo_Visita"</span>, <span class="at">values_to =</span> <span class="st">"Num_Visitas"</span>) <span class="sc">|&gt;</span></span>
-<span id="cb14-8"><a href="#cb14-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> SQUAD, <span class="at">y =</span> Num_Visitas, <span class="at">fill =</span> Tipo_Visita)) <span class="sc">+</span></span>
-<span id="cb14-9"><a href="#cb14-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_bar</span>(<span class="at">stat =</span> <span class="st">"identity"</span>)</span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>df <span class="sc">|&gt;</span>  </span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> INDICACIÓN, <span class="at">fill =</span> SQUAD)) <span class="sc">+</span></span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_bar</span>()</span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
@@ -1031,7 +1070,7 @@ Solución
 </div>
 </div>
 <div id="exr-10" class="theorem exercise">
-<p><span class="theorem-title"><strong>Ejercicio 10</strong></span> Dibujar un histograma del número de visitas a la página web de Roche para médicos, eliminando los médicos que no han visitado la página web.</p>
+<p><span class="theorem-title"><strong>Ejercicio 10</strong></span> Dibujar el diagrama de barras con el número de visitas presenciales y virtuales de cada grupo. ¿Qué grupo ha tenido un mayor número de visitas presenciales? ¿Y de visitas virtuales?</p>
 <div class="callout callout-style-default callout-tip callout-titled">
 <div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-10-contents" aria-controls="callout-10" aria-expanded="false" aria-label="Toggle callout">
 <div class="callout-icon-container">
@@ -1045,10 +1084,15 @@ Solución
 <div id="callout-10" class="callout-10-contents callout-collapse collapse">
 <div class="callout-body-container callout-body">
 <div class="cell">
-<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>df <span class="sc">|&gt;</span> </span>
-<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(Num_RochePlus <span class="sc">&gt;</span> <span class="dv">0</span>) <span class="sc">|&gt;</span></span>
-<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> Num_RochePlus)) <span class="sc">+</span></span>
-<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_histogram</span>(<span class="at">col =</span> <span class="st">"white"</span>, <span class="at">fill =</span> <span class="st">"steelblue"</span>)</span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>df <span class="sc">|&gt;</span></span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(SQUAD) <span class="sc">|&gt;</span></span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(</span>
+<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">Num_VisitaF2F =</span> <span class="fu">sum</span>(Num_VisitaF2F),</span>
+<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">Num_VisitaVirtual =</span> <span class="fu">sum</span>(Num_VisitaVirtual)</span>
+<span id="cb15-6"><a href="#cb15-6" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">|&gt;</span> </span>
+<span id="cb15-7"><a href="#cb15-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pivot_longer</span>(<span class="at">cols =</span> <span class="fu">c</span>(Num_VisitaF2F, Num_VisitaVirtual), <span class="at">names_to =</span> <span class="st">"Tipo_Visita"</span>, <span class="at">values_to =</span> <span class="st">"Num_Visitas"</span>) <span class="sc">|&gt;</span></span>
+<span id="cb15-8"><a href="#cb15-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> SQUAD, <span class="at">y =</span> Num_Visitas, <span class="at">fill =</span> Tipo_Visita)) <span class="sc">+</span></span>
+<span id="cb15-9"><a href="#cb15-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_bar</span>(<span class="at">stat =</span> <span class="st">"identity"</span>)</span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
@@ -1062,8 +1106,7 @@ Solución
 </div>
 </div>
 <div id="exr-11" class="theorem exercise">
-<p><span class="theorem-title"><strong>Ejercicio 11</strong></span> Dibujar el diagrama de cajas del número de visitas a la página web de Roche para médicos, eliminando los médicos que no han visitado la página web.</p>
-<p>¿Existen datos atípicos? Eliminar el 5% de los datos atípicos más extremos y volver a dibujar el diagrama de cajas.</p>
+<p><span class="theorem-title"><strong>Ejercicio 11</strong></span> Dibujar un histograma del número de visitas a la página web de Roche para médicos, eliminando los médicos que no han visitado la página web.</p>
 <div class="callout callout-style-default callout-tip callout-titled">
 <div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-11-contents" aria-controls="callout-11" aria-expanded="false" aria-label="Toggle callout">
 <div class="callout-icon-container">
@@ -1080,25 +1123,11 @@ Solución
 <div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>df <span class="sc">|&gt;</span> </span>
 <span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(Num_RochePlus <span class="sc">&gt;</span> <span class="dv">0</span>) <span class="sc">|&gt;</span></span>
 <span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> Num_RochePlus)) <span class="sc">+</span></span>
-<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_boxplot</span>(<span class="at">fill =</span> <span class="st">"steelblue"</span>)</span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_histogram</span>(<span class="at">col =</span> <span class="st">"white"</span>, <span class="at">fill =</span> <span class="st">"steelblue"</span>)</span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
 <p><img src="index_files/figure-html/unnamed-chunk-13-1.png" class="img-fluid figure-img" width="672"></p>
-</figure>
-</div>
-</div>
-</div>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>df <span class="sc">|&gt;</span> </span>
-<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(Num_RochePlus <span class="sc">&gt;</span> <span class="dv">0</span>) <span class="sc">|&gt;</span></span>
-<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(Num_RochePlus <span class="sc">&lt;</span> <span class="fu">quantile</span>(Num_RochePlus, <span class="fl">0.95</span>)) <span class="sc">|&gt;</span></span>
-<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> Num_RochePlus)) <span class="sc">+</span></span>
-<span id="cb17-5"><a href="#cb17-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_boxplot</span>(<span class="at">fill =</span> <span class="st">"steelblue"</span>)</span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output-display">
-<div>
-<figure class="figure">
-<p><img src="index_files/figure-html/unnamed-chunk-14-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
@@ -1108,7 +1137,8 @@ Solución
 </div>
 </div>
 <div id="exr-12" class="theorem exercise">
-<p><span class="theorem-title"><strong>Ejercicio 12</strong></span> Dibujar el diagram de cajas del número de visitas a la página web de Roche para médicos, eliminando los médicos que no han visitado la página web y agrupando según el equipo. ¿Qué equipo tiene un mayor número de visitas a la página web?</p>
+<p><span class="theorem-title"><strong>Ejercicio 12</strong></span> Dibujar el diagrama de cajas del número de visitas a la página web de Roche para médicos, eliminando los médicos que no han visitado la página web.</p>
+<p>¿Existen datos atípicos? Eliminar el 5% de los datos atípicos más extremos y volver a dibujar el diagrama de cajas.</p>
 <div class="callout callout-style-default callout-tip callout-titled">
 <div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-12-contents" aria-controls="callout-12" aria-expanded="false" aria-label="Toggle callout">
 <div class="callout-icon-container">
@@ -1122,11 +1152,24 @@ Solución
 <div id="callout-12" class="callout-12-contents callout-collapse collapse">
 <div class="callout-body-container callout-body">
 <div class="cell">
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>df <span class="sc">|&gt;</span> </span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(Num_RochePlus <span class="sc">&gt;</span> <span class="dv">0</span>) <span class="sc">|&gt;</span></span>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> Num_RochePlus)) <span class="sc">+</span></span>
+<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_boxplot</span>(<span class="at">fill =</span> <span class="st">"steelblue"</span>)</span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="index_files/figure-html/unnamed-chunk-14-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<div class="cell">
 <div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a>df <span class="sc">|&gt;</span> </span>
 <span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(Num_RochePlus <span class="sc">&gt;</span> <span class="dv">0</span>) <span class="sc">|&gt;</span></span>
 <span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(Num_RochePlus <span class="sc">&lt;</span> <span class="fu">quantile</span>(Num_RochePlus, <span class="fl">0.95</span>)) <span class="sc">|&gt;</span></span>
-<span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> SQUAD, <span class="at">y =</span> Num_RochePlus, <span class="at">fill =</span> SQUAD)) <span class="sc">+</span></span>
-<span id="cb18-5"><a href="#cb18-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_boxplot</span>()</span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> Num_RochePlus)) <span class="sc">+</span></span>
+<span id="cb18-5"><a href="#cb18-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_boxplot</span>(<span class="at">fill =</span> <span class="st">"steelblue"</span>)</span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
@@ -1140,7 +1183,7 @@ Solución
 </div>
 </div>
 <div id="exr-13" class="theorem exercise">
-<p><span class="theorem-title"><strong>Ejercicio 13</strong></span> Realizar un resumen descriptivo de las variables numéricas del conjunto de datos.</p>
+<p><span class="theorem-title"><strong>Ejercicio 13</strong></span> Dibujar el diagram de cajas del número de visitas a la página web de Roche para médicos, eliminando los médicos que no han visitado la página web y agrupando según el equipo. ¿Qué equipo tiene un mayor número de visitas a la página web?</p>
 <div class="callout callout-style-default callout-tip callout-titled">
 <div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-13-contents" aria-controls="callout-13" aria-expanded="false" aria-label="Toggle callout">
 <div class="callout-icon-container">
@@ -1154,9 +1197,41 @@ Solución
 <div id="callout-13" class="callout-13-contents callout-collapse collapse">
 <div class="callout-body-container callout-body">
 <div class="cell">
-<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a>df <span class="sc">|&gt;</span></span>
-<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select_if</span>(is.numeric) <span class="sc">|&gt;</span> </span>
-<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">st</span>()</span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a>df <span class="sc">|&gt;</span> </span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(Num_RochePlus <span class="sc">&gt;</span> <span class="dv">0</span>) <span class="sc">|&gt;</span></span>
+<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(Num_RochePlus <span class="sc">&lt;</span> <span class="fu">quantile</span>(Num_RochePlus, <span class="fl">0.95</span>)) <span class="sc">|&gt;</span></span>
+<span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> SQUAD, <span class="at">y =</span> Num_RochePlus, <span class="at">fill =</span> SQUAD)) <span class="sc">+</span></span>
+<span id="cb19-5"><a href="#cb19-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_boxplot</span>()</span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="index_files/figure-html/unnamed-chunk-16-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div id="exr-14" class="theorem exercise">
+<p><span class="theorem-title"><strong>Ejercicio 14</strong></span> Realizar un resumen descriptivo de las variables numéricas del conjunto de datos.</p>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-14-contents" aria-controls="callout-14" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Solución
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-14" class="callout-14-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<div class="cell">
+<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a>df <span class="sc">|&gt;</span></span>
+<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select_if</span>(is.numeric) <span class="sc">|&gt;</span> </span>
+<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">st</span>()</span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div>
 <table class="table table-sm table-striped small" data-quarto-postprocess="true">
@@ -1315,10 +1390,10 @@ Solución
 </div>
 </div>
 </div>
-<div id="exr-14" class="theorem exercise">
-<p><span class="theorem-title"><strong>Ejercicio 14</strong></span> Realizar un resumen descriptivo con la media y la desviación típica del número de visitas presenciales y virtuales agrupadas por equipo.</p>
+<div id="exr-15" class="theorem exercise">
+<p><span class="theorem-title"><strong>Ejercicio 15</strong></span> Realizar un resumen descriptivo con la media y la desviación típica del número de visitas presenciales y virtuales agrupadas por equipo.</p>
 <div class="callout callout-style-default callout-tip callout-titled">
-<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-14-contents" aria-controls="callout-14" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-15-contents" aria-controls="callout-15" aria-expanded="false" aria-label="Toggle callout">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
@@ -1327,11 +1402,11 @@ Solución
 </div>
 <div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
 </div>
-<div id="callout-14" class="callout-14-contents callout-collapse collapse">
+<div id="callout-15" class="callout-15-contents callout-collapse collapse">
 <div class="callout-body-container callout-body">
 <div class="cell">
-<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="fu">st</span>(df, <span class="at">vars =</span> <span class="fu">c</span>(<span class="st">"Num_VisitaF2F"</span>, <span class="st">"Num_VisitaVirtual"</span>), <span class="at">group =</span> <span class="st">"SQUAD"</span>, <span class="at">summ =</span> <span class="fu">c</span>(<span class="st">'mean(x)'</span>, <span class="st">'sd(x)'</span>),</span>
-<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a><span class="at">summ.names =</span> <span class="fu">c</span>(<span class="st">"Media"</span>, <span class="st">"Desv. típica"</span>))</span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="fu">st</span>(df, <span class="at">vars =</span> <span class="fu">c</span>(<span class="st">"Num_VisitaF2F"</span>, <span class="st">"Num_VisitaVirtual"</span>), <span class="at">group =</span> <span class="st">"SQUAD"</span>, <span class="at">summ =</span> <span class="fu">c</span>(<span class="st">'mean(x)'</span>, <span class="st">'sd(x)'</span>),</span>
+<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a><span class="at">summ.names =</span> <span class="fu">c</span>(<span class="st">"Media"</span>, <span class="st">"Desv. típica"</span>))</span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div>
 <table class="table table-sm table-striped small" data-quarto-postprocess="true">
@@ -1431,71 +1506,27 @@ ONCOLOGY
 </div>
 <p>Otra forma.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a>df <span class="sc">|&gt;</span></span>
-<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(SQUAD) <span class="sc">|&gt;</span></span>
-<span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select_if</span>(is.numeric) <span class="sc">|&gt;</span></span>
-<span id="cb21-4"><a href="#cb21-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="fu">across</span>(<span class="fu">everything</span>(), <span class="fu">list</span>(<span class="at">mean =</span> mean, <span class="at">sd =</span> sd)) ) <span class="sc">|&gt;</span> </span>
-<span id="cb21-5"><a href="#cb21-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">kable</span>()</span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a>df <span class="sc">|&gt;</span></span>
+<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(SQUAD) <span class="sc">|&gt;</span></span>
+<span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(Num_VisitaF2F, Num_VisitaVirtual) <span class="sc">|&gt;</span></span>
+<span id="cb22-4"><a href="#cb22-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="fu">across</span>(<span class="fu">everything</span>(), <span class="fu">list</span>(<span class="at">mean =</span> mean, <span class="at">sd =</span> sd)) ) <span class="sc">|&gt;</span> </span>
+<span id="cb22-5"><a href="#cb22-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">kable</span>()</span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <table class="table table-sm table-striped small">
 <colgroup>
-<col style="width: 2%">
-<col style="width: 3%">
-<col style="width: 3%">
-<col style="width: 3%">
-<col style="width: 3%">
-<col style="width: 4%">
-<col style="width: 4%">
-<col style="width: 3%">
-<col style="width: 3%">
-<col style="width: 3%">
-<col style="width: 3%">
-<col style="width: 4%">
-<col style="width: 3%">
-<col style="width: 3%">
-<col style="width: 3%">
-<col style="width: 3%">
-<col style="width: 2%">
-<col style="width: 3%">
-<col style="width: 3%">
-<col style="width: 3%">
-<col style="width: 3%">
-<col style="width: 3%">
-<col style="width: 3%">
-<col style="width: 5%">
-<col style="width: 4%">
-<col style="width: 4%">
-<col style="width: 3%">
+<col style="width: 12%">
+<col style="width: 20%">
+<col style="width: 18%">
+<col style="width: 25%">
+<col style="width: 23%">
 </colgroup>
 <thead>
 <tr class="header">
 <th style="text-align: left;">SQUAD</th>
 <th style="text-align: right;">Num_VisitaF2F_mean</th>
 <th style="text-align: right;">Num_VisitaF2F_sd</th>
-<th style="text-align: right;">Num_EventoF2F_mean</th>
-<th style="text-align: right;">Num_EventoF2F_sd</th>
 <th style="text-align: right;">Num_VisitaVirtual_mean</th>
 <th style="text-align: right;">Num_VisitaVirtual_sd</th>
-<th style="text-align: right;">Num_EcampOPEN_mean</th>
-<th style="text-align: right;">Num_EcampOPEN_sd</th>
-<th style="text-align: right;">Num_EcampSENT_mean</th>
-<th style="text-align: right;">Num_EcampSENT_sd</th>
-<th style="text-align: right;">Num_EventoVirt_mean</th>
-<th style="text-align: right;">Num_EventoVirt_sd</th>
-<th style="text-align: right;">Num_NLCLICK_mean</th>
-<th style="text-align: right;">Num_NLCLICK_sd</th>
-<th style="text-align: right;">Num_NLSENT_mean</th>
-<th style="text-align: right;">Num_NLSENT_sd</th>
-<th style="text-align: right;">Num_Elearning_mean</th>
-<th style="text-align: right;">Num_Elearning_sd</th>
-<th style="text-align: right;">Num_RochePlus_mean</th>
-<th style="text-align: right;">Num_RochePlus_sd</th>
-<th style="text-align: right;">total_visitas_mean</th>
-<th style="text-align: right;">total_visitas_sd</th>
-<th style="text-align: right;">total_interacciones_mean</th>
-<th style="text-align: right;">total_interacciones_sd</th>
-<th style="text-align: right;">total_criterios_mean</th>
-<th style="text-align: right;">total_criterios_sd</th>
 </tr>
 </thead>
 <tbody>
@@ -1503,175 +1534,141 @@ ONCOLOGY
 <td style="text-align: left;">ALOPECIA</td>
 <td style="text-align: right;">1.5740891</td>
 <td style="text-align: right;">1.4808258</td>
-<td style="text-align: right;">0.0348178</td>
-<td style="text-align: right;">0.1833924</td>
 <td style="text-align: right;">0.0591093</td>
 <td style="text-align: right;">0.3075034</td>
-<td style="text-align: right;">0.2890688</td>
-<td style="text-align: right;">0.5138301</td>
-<td style="text-align: right;">0.3417004</td>
-<td style="text-align: right;">0.5720406</td>
-<td style="text-align: right;">0.0024291</td>
-<td style="text-align: right;">0.0492464</td>
-<td style="text-align: right;">0.0040486</td>
-<td style="text-align: right;">0.0635253</td>
-<td style="text-align: right;">0.1085020</td>
-<td style="text-align: right;">0.5382160</td>
-<td style="text-align: right;">0</td>
-<td style="text-align: right;">0</td>
-<td style="text-align: right;">0.0914980</td>
-<td style="text-align: right;">0.7405048</td>
-<td style="text-align: right;">1.6331984</td>
-<td style="text-align: right;">1.5183478</td>
-<td style="text-align: right;">2.055061</td>
-<td style="text-align: right;">1.528830</td>
-<td style="text-align: right;">1.107692</td>
-<td style="text-align: right;">0.4012510</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">AUTOINMUNE</td>
 <td style="text-align: right;">0.0335878</td>
 <td style="text-align: right;">0.2185481</td>
-<td style="text-align: right;">0.5152672</td>
-<td style="text-align: right;">0.7615646</td>
 <td style="text-align: right;">0.0061069</td>
 <td style="text-align: right;">0.0871900</td>
-<td style="text-align: right;">1.6595420</td>
-<td style="text-align: right;">2.0015570</td>
-<td style="text-align: right;">2.4541985</td>
-<td style="text-align: right;">2.6546516</td>
-<td style="text-align: right;">0.1007634</td>
-<td style="text-align: right;">0.3135582</td>
-<td style="text-align: right;">0.0572519</td>
-<td style="text-align: right;">0.3896151</td>
-<td style="text-align: right;">0.6175573</td>
-<td style="text-align: right;">1.8813946</td>
-<td style="text-align: right;">0</td>
-<td style="text-align: right;">0</td>
-<td style="text-align: right;">1.4282443</td>
-<td style="text-align: right;">4.8082209</td>
-<td style="text-align: right;">0.0396947</td>
-<td style="text-align: right;">0.2532235</td>
-<td style="text-align: right;">3.800763</td>
-<td style="text-align: right;">5.443578</td>
-<td style="text-align: right;">1.319084</td>
-<td style="text-align: right;">0.7136254</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">FLU</td>
 <td style="text-align: right;">1.2843220</td>
 <td style="text-align: right;">1.8652473</td>
-<td style="text-align: right;">0.2663418</td>
-<td style="text-align: right;">0.5371647</td>
 <td style="text-align: right;">0.1303983</td>
 <td style="text-align: right;">0.5029010</td>
-<td style="text-align: right;">0.6504789</td>
-<td style="text-align: right;">0.9302567</td>
-<td style="text-align: right;">0.9258948</td>
-<td style="text-align: right;">1.1294618</td>
-<td style="text-align: right;">0.0892287</td>
-<td style="text-align: right;">0.3121138</td>
-<td style="text-align: right;">0.0168039</td>
-<td style="text-align: right;">0.1711649</td>
-<td style="text-align: right;">0.2162662</td>
-<td style="text-align: right;">0.8501770</td>
-<td style="text-align: right;">0</td>
-<td style="text-align: right;">0</td>
-<td style="text-align: right;">0.4209377</td>
-<td style="text-align: right;">2.1849966</td>
-<td style="text-align: right;">1.4147202</td>
-<td style="text-align: right;">1.9849209</td>
-<td style="text-align: right;">2.858511</td>
-<td style="text-align: right;">3.010091</td>
-<td style="text-align: right;">1.374055</td>
-<td style="text-align: right;">0.7309892</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">HEART</td>
 <td style="text-align: right;">2.4160673</td>
 <td style="text-align: right;">2.2533103</td>
-<td style="text-align: right;">0.3963903</td>
-<td style="text-align: right;">0.6707743</td>
 <td style="text-align: right;">0.2847062</td>
 <td style="text-align: right;">0.9011007</td>
-<td style="text-align: right;">0.3350522</td>
-<td style="text-align: right;">0.7066994</td>
-<td style="text-align: right;">0.4369657</td>
-<td style="text-align: right;">0.8149135</td>
-<td style="text-align: right;">0.0310761</td>
-<td style="text-align: right;">0.1856276</td>
-<td style="text-align: right;">0.0029855</td>
-<td style="text-align: right;">0.0545616</td>
-<td style="text-align: right;">0.0346044</td>
-<td style="text-align: right;">0.3224701</td>
-<td style="text-align: right;">0</td>
-<td style="text-align: right;">0</td>
-<td style="text-align: right;">0.0990636</td>
-<td style="text-align: right;">1.0741815</td>
-<td style="text-align: right;">2.7007735</td>
-<td style="text-align: right;">2.4960665</td>
-<td style="text-align: right;">3.565341</td>
-<td style="text-align: right;">2.963284</td>
-<td style="text-align: right;">1.557335</td>
-<td style="text-align: right;">0.7428656</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">OBESITY</td>
 <td style="text-align: right;">2.3020262</td>
 <td style="text-align: right;">2.0762741</td>
-<td style="text-align: right;">0.4681300</td>
-<td style="text-align: right;">0.7799590</td>
 <td style="text-align: right;">0.3387505</td>
 <td style="text-align: right;">0.9621621</td>
-<td style="text-align: right;">0.2978050</td>
-<td style="text-align: right;">0.7332389</td>
-<td style="text-align: right;">0.4033347</td>
-<td style="text-align: right;">0.8737278</td>
-<td style="text-align: right;">0.0493879</td>
-<td style="text-align: right;">0.2870961</td>
-<td style="text-align: right;">0.0143520</td>
-<td style="text-align: right;">0.1650379</td>
-<td style="text-align: right;">0.2087379</td>
-<td style="text-align: right;">0.7940243</td>
-<td style="text-align: right;">0</td>
-<td style="text-align: right;">0</td>
-<td style="text-align: right;">0.4535669</td>
-<td style="text-align: right;">2.1604562</td>
-<td style="text-align: right;">2.6407767</td>
-<td style="text-align: right;">2.3379550</td>
-<td style="text-align: right;">3.924019</td>
-<td style="text-align: right;">3.600502</td>
-<td style="text-align: right;">1.647320</td>
-<td style="text-align: right;">0.8753504</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">ONCOLOGY</td>
 <td style="text-align: right;">1.7717579</td>
 <td style="text-align: right;">1.9844445</td>
-<td style="text-align: right;">0.4410045</td>
-<td style="text-align: right;">0.6996129</td>
 <td style="text-align: right;">0.4247015</td>
 <td style="text-align: right;">0.9603207</td>
-<td style="text-align: right;">1.0045286</td>
-<td style="text-align: right;">1.7137635</td>
-<td style="text-align: right;">1.5842734</td>
-<td style="text-align: right;">2.3142808</td>
-<td style="text-align: right;">0.0950185</td>
-<td style="text-align: right;">0.3018319</td>
-<td style="text-align: right;">0.0261836</td>
-<td style="text-align: right;">0.2530567</td>
-<td style="text-align: right;">0.4617538</td>
-<td style="text-align: right;">1.7981675</td>
-<td style="text-align: right;">0</td>
-<td style="text-align: right;">0</td>
-<td style="text-align: right;">0.9420338</td>
-<td style="text-align: right;">4.0656786</td>
-<td style="text-align: right;">2.1964594</td>
-<td style="text-align: right;">2.3854737</td>
-<td style="text-align: right;">4.705228</td>
-<td style="text-align: right;">5.119076</td>
-<td style="text-align: right;">1.925895</td>
-<td style="text-align: right;">1.0075189</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<p>Y otra más.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a>df <span class="sc">|&gt;</span></span>
+<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(SQUAD, Num_VisitaF2F, Num_VisitaVirtual) <span class="sc">|&gt;</span></span>
+<span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pivot_longer</span>(<span class="at">cols =</span> <span class="fu">c</span>(Num_VisitaF2F, Num_VisitaVirtual), <span class="at">names_to =</span> <span class="st">"Tipo_Visita"</span>, <span class="at">values_to =</span> <span class="st">"Num_Visitas"</span>) <span class="sc">|&gt;</span></span>
+<span id="cb23-4"><a href="#cb23-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(SQUAD, Tipo_Visita) <span class="sc">|&gt;</span></span>
+<span id="cb23-5"><a href="#cb23-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(</span>
+<span id="cb23-6"><a href="#cb23-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">Media =</span> <span class="fu">mean</span>(Num_Visitas),</span>
+<span id="cb23-7"><a href="#cb23-7" aria-hidden="true" tabindex="-1"></a>    <span class="at">Desv_Tipica =</span> <span class="fu">sd</span>(Num_Visitas)</span>
+<span id="cb23-8"><a href="#cb23-8" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">|&gt;</span></span>
+<span id="cb23-9"><a href="#cb23-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">kable</span>()</span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<table class="table table-sm table-striped small">
+<thead>
+<tr class="header">
+<th style="text-align: left;">SQUAD</th>
+<th style="text-align: left;">Tipo_Visita</th>
+<th style="text-align: right;">Media</th>
+<th style="text-align: right;">Desv_Tipica</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">ALOPECIA</td>
+<td style="text-align: left;">Num_VisitaF2F</td>
+<td style="text-align: right;">1.5740891</td>
+<td style="text-align: right;">1.4808258</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">ALOPECIA</td>
+<td style="text-align: left;">Num_VisitaVirtual</td>
+<td style="text-align: right;">0.0591093</td>
+<td style="text-align: right;">0.3075034</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">AUTOINMUNE</td>
+<td style="text-align: left;">Num_VisitaF2F</td>
+<td style="text-align: right;">0.0335878</td>
+<td style="text-align: right;">0.2185481</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">AUTOINMUNE</td>
+<td style="text-align: left;">Num_VisitaVirtual</td>
+<td style="text-align: right;">0.0061069</td>
+<td style="text-align: right;">0.0871900</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">FLU</td>
+<td style="text-align: left;">Num_VisitaF2F</td>
+<td style="text-align: right;">1.2843220</td>
+<td style="text-align: right;">1.8652473</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">FLU</td>
+<td style="text-align: left;">Num_VisitaVirtual</td>
+<td style="text-align: right;">0.1303983</td>
+<td style="text-align: right;">0.5029010</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">HEART</td>
+<td style="text-align: left;">Num_VisitaF2F</td>
+<td style="text-align: right;">2.4160673</td>
+<td style="text-align: right;">2.2533103</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">HEART</td>
+<td style="text-align: left;">Num_VisitaVirtual</td>
+<td style="text-align: right;">0.2847062</td>
+<td style="text-align: right;">0.9011007</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">OBESITY</td>
+<td style="text-align: left;">Num_VisitaF2F</td>
+<td style="text-align: right;">2.3020262</td>
+<td style="text-align: right;">2.0762741</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">OBESITY</td>
+<td style="text-align: left;">Num_VisitaVirtual</td>
+<td style="text-align: right;">0.3387505</td>
+<td style="text-align: right;">0.9621621</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">ONCOLOGY</td>
+<td style="text-align: left;">Num_VisitaF2F</td>
+<td style="text-align: right;">1.7717579</td>
+<td style="text-align: right;">1.9844445</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">ONCOLOGY</td>
+<td style="text-align: left;">Num_VisitaVirtual</td>
+<td style="text-align: right;">0.4247015</td>
+<td style="text-align: right;">0.9603207</td>
 </tr>
 </tbody>
 </table>
@@ -1681,38 +1678,8 @@ ONCOLOGY
 </div>
 </div>
 </div>
-<div id="exr-14" class="theorem exercise">
-<p><span class="theorem-title"><strong>Ejercicio 15</strong></span> Dibujar el diagrama de dispersión entre el número de correos electrónicos enviados y el número de correos electrónicos abiertos. ¿Existe alguna relación entre estas dos variables?</p>
-<div class="callout callout-style-default callout-tip callout-titled">
-<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-15-contents" aria-controls="callout-15" aria-expanded="false" aria-label="Toggle callout">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-title-container flex-fill">
-Solución
-</div>
-<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
-</div>
-<div id="callout-15" class="callout-15-contents callout-collapse collapse">
-<div class="callout-body-container callout-body">
-<div class="cell">
-<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a>df <span class="sc">|&gt;</span> </span>
-<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> Num_EcampSENT, <span class="at">y =</span> Num_EcampOPEN)) <span class="sc">+</span></span>
-<span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>()</span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output-display">
-<div>
-<figure class="figure">
-<p><img src="index_files/figure-html/unnamed-chunk-19-1.png" class="img-fluid figure-img" width="672"></p>
-</figure>
-</div>
-</div>
-</div>
-</div>
-</div>
-</div>
-</div>
-<div id="exr-15" class="theorem exercise">
-<p><span class="theorem-title"><strong>Ejercicio 16</strong></span> Dibujar los diagramas de dispersión de todas las variables numéricas del conjunto de datos. ¿Existe alguna relación entre las variables?</p>
+<div id="exr-16" class="theorem exercise">
+<p><span class="theorem-title"><strong>Ejercicio 16</strong></span> Dibujar el diagrama de dispersión entre el número de correos electrónicos enviados y el número de correos electrónicos abiertos. ¿Existe alguna relación entre estas dos variables?</p>
 <div class="callout callout-style-default callout-tip callout-titled">
 <div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-16-contents" aria-controls="callout-16" aria-expanded="false" aria-label="Toggle callout">
 <div class="callout-icon-container">
@@ -1726,19 +1693,280 @@ Solución
 <div id="callout-16" class="callout-16-contents callout-collapse collapse">
 <div class="callout-body-container callout-body">
 <div class="cell">
-<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(GGally)</span>
-<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a>df <span class="sc">|&gt;</span> </span>
-<span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(Num_EcampOPEN <span class="sc">&gt;</span> <span class="dv">0</span>) <span class="sc">|&gt;</span></span>
-<span id="cb23-4"><a href="#cb23-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select_if</span>(is.numeric) <span class="sc">|&gt;</span> </span>
-<span id="cb23-5"><a href="#cb23-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggpairs</span>()</span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb24"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a>df <span class="sc">|&gt;</span> </span>
+<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> Num_EcampSENT, <span class="at">y =</span> Num_EcampOPEN)) <span class="sc">+</span></span>
+<span id="cb24-3"><a href="#cb24-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>()</span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="index_files/figure-html/unnamed-chunk-20-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="index_files/figure-html/unnamed-chunk-21-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
 </div>
+</div>
+</div>
+</div>
+</div>
+<div id="exr-17" class="theorem exercise">
+<p><span class="theorem-title"><strong>Ejercicio 17</strong></span> Dibujar los diagramas de dispersión de todas las variables numéricas del conjunto de datos. ¿Existe alguna relación entre las variables?</p>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-17-contents" aria-controls="callout-17" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Solución
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-17" class="callout-17-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<div class="cell">
+<div class="sourceCode cell-code" id="cb25"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(GGally)</span>
+<span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a>df <span class="sc">|&gt;</span> </span>
+<span id="cb25-3"><a href="#cb25-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(Num_EcampOPEN <span class="sc">&gt;</span> <span class="dv">0</span>) <span class="sc">|&gt;</span></span>
+<span id="cb25-4"><a href="#cb25-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select_if</span>(is.numeric) <span class="sc">|&gt;</span> </span>
+<span id="cb25-5"><a href="#cb25-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggpairs</span>()</span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="index_files/figure-html/unnamed-chunk-22-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div id="exr-18" class="theorem exercise">
+<p><span class="theorem-title"><strong>Ejercicio 18</strong></span> Calcular la recta de regresión del número de correos electrónicos abiertos sobre el número de correos electrónicos enviados. ¿Cuál es la tasa de apertura de correos electrónicos?</p>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-18-contents" aria-controls="callout-18" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Solución
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-18" class="callout-18-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<div class="cell">
+<div class="sourceCode cell-code" id="cb26"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(broom)</span>
+<span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a>modelo <span class="ot">&lt;-</span> <span class="fu">lm</span>(Num_EcampOPEN <span class="sc">~</span> Num_EcampSENT, <span class="at">data =</span> df)</span>
+<span id="cb26-3"><a href="#cb26-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb26-4"><a href="#cb26-4" aria-hidden="true" tabindex="-1"></a>modelo <span class="sc">|&gt;</span></span>
+<span id="cb26-5"><a href="#cb26-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tidy</span>() <span class="sc">|&gt;</span></span>
+<span id="cb26-6"><a href="#cb26-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">kable</span>()</span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<table class="table table-sm table-striped small">
+<thead>
+<tr class="header">
+<th style="text-align: left;">term</th>
+<th style="text-align: right;">estimate</th>
+<th style="text-align: right;">std.error</th>
+<th style="text-align: right;">statistic</th>
+<th style="text-align: right;">p.value</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">(Intercept)</td>
+<td style="text-align: right;">0.0550391</td>
+<td style="text-align: right;">0.0047329</td>
+<td style="text-align: right;">11.62892</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Num_EcampSENT</td>
+<td style="text-align: right;">0.6169510</td>
+<td style="text-align: right;">0.0023177</td>
+<td style="text-align: right;">266.19462</td>
+<td style="text-align: right;">0</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<p>La tasa de apertura de correos electrónicos es la pendiente de la recta de regresión, es decir, el coeficiente de la variable <code>Num_EcampSENT</code> que vale 0.5664, o lo que es lo mismo, el 56.64%.</p>
+</div>
+</div>
+</div>
+<p>Dibujar la recta de regresión sobre el diagrama de dispersión.</p>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-19-contents" aria-controls="callout-19" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Solución
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-19" class="callout-19-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<div class="cell">
+<div class="sourceCode cell-code" id="cb27"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a>df <span class="sc">|&gt;</span> </span>
+<span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> Num_EcampSENT, <span class="at">y =</span> Num_EcampOPEN)) <span class="sc">+</span></span>
+<span id="cb27-3"><a href="#cb27-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>() <span class="sc">+</span></span>
+<span id="cb27-4"><a href="#cb27-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_smooth</span>(<span class="at">method =</span> <span class="st">"lm"</span>, <span class="at">se =</span> <span class="cn">FALSE</span>)</span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="index_files/figure-html/unnamed-chunk-24-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div id="exr-19" class="theorem exercise">
+<p><span class="theorem-title"><strong>Ejercicio 19</strong></span> Calcular la recta de regresión del número de correos electrónicos abiertos sobre el número de correos electrónicos enviados para cada equipo. ¿En qué equipo la tasa de apertura de correos electrónicos es mayor?</p>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-20-contents" aria-controls="callout-20" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Solución
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-20" class="callout-20-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<div class="cell">
+<div class="sourceCode cell-code" id="cb28"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a>df <span class="sc">|&gt;</span> </span>
+<span id="cb28-2"><a href="#cb28-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">nest_by</span>(SQUAD) <span class="sc">|&gt;</span></span>
+<span id="cb28-3"><a href="#cb28-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">modelo =</span> <span class="fu">list</span>(<span class="fu">lm</span>(Num_EcampOPEN <span class="sc">~</span> Num_EcampSENT, <span class="at">data =</span> data))) <span class="sc">|&gt;</span></span>
+<span id="cb28-4"><a href="#cb28-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">reframe</span>(<span class="fu">tidy</span>(modelo)) <span class="sc">|&gt;</span></span>
+<span id="cb28-5"><a href="#cb28-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">kable</span>()</span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<table class="table table-sm table-striped small">
+<colgroup>
+<col style="width: 16%">
+<col style="width: 20%">
+<col style="width: 16%">
+<col style="width: 14%">
+<col style="width: 17%">
+<col style="width: 14%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;">SQUAD</th>
+<th style="text-align: left;">term</th>
+<th style="text-align: right;">estimate</th>
+<th style="text-align: right;">std.error</th>
+<th style="text-align: right;">statistic</th>
+<th style="text-align: right;">p.value</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">ALOPECIA</td>
+<td style="text-align: left;">(Intercept)</td>
+<td style="text-align: right;">0.0140406</td>
+<td style="text-align: right;">0.0075645</td>
+<td style="text-align: right;">1.8561320</td>
+<td style="text-align: right;">0.0636732</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">ALOPECIA</td>
+<td style="text-align: left;">Num_EcampSENT</td>
+<td style="text-align: right;">0.8048811</td>
+<td style="text-align: right;">0.0113559</td>
+<td style="text-align: right;">70.8779548</td>
+<td style="text-align: right;">0.0000000</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">AUTOINMUNE</td>
+<td style="text-align: left;">(Intercept)</td>
+<td style="text-align: right;">0.2232791</td>
+<td style="text-align: right;">0.0475117</td>
+<td style="text-align: right;">4.6994593</td>
+<td style="text-align: right;">0.0000029</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">AUTOINMUNE</td>
+<td style="text-align: left;">Num_EcampSENT</td>
+<td style="text-align: right;">0.5852269</td>
+<td style="text-align: right;">0.0131446</td>
+<td style="text-align: right;">44.5222182</td>
+<td style="text-align: right;">0.0000000</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">FLU</td>
+<td style="text-align: left;">(Intercept)</td>
+<td style="text-align: right;">0.0164249</td>
+<td style="text-align: right;">0.0086646</td>
+<td style="text-align: right;">1.8956359</td>
+<td style="text-align: right;">0.0580566</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">FLU</td>
+<td style="text-align: left;">Num_EcampSENT</td>
+<td style="text-align: right;">0.6848014</td>
+<td style="text-align: right;">0.0059330</td>
+<td style="text-align: right;">115.4216355</td>
+<td style="text-align: right;">0.0000000</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">HEART</td>
+<td style="text-align: left;">(Intercept)</td>
+<td style="text-align: right;">-0.0013706</td>
+<td style="text-align: right;">0.0042995</td>
+<td style="text-align: right;">-0.3187886</td>
+<td style="text-align: right;">0.7498959</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">HEART</td>
+<td style="text-align: left;">Num_EcampSENT</td>
+<td style="text-align: right;">0.7699069</td>
+<td style="text-align: right;">0.0046500</td>
+<td style="text-align: right;">165.5714254</td>
+<td style="text-align: right;">0.0000000</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">OBESITY</td>
+<td style="text-align: left;">(Intercept)</td>
+<td style="text-align: right;">-0.0044422</td>
+<td style="text-align: right;">0.0052822</td>
+<td style="text-align: right;">-0.8409895</td>
+<td style="text-align: right;">0.4003963</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">OBESITY</td>
+<td style="text-align: left;">Num_EcampSENT</td>
+<td style="text-align: right;">0.7493707</td>
+<td style="text-align: right;">0.0054894</td>
+<td style="text-align: right;">136.5121225</td>
+<td style="text-align: right;">0.0000000</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">ONCOLOGY</td>
+<td style="text-align: left;">(Intercept)</td>
+<td style="text-align: right;">0.0622787</td>
+<td style="text-align: right;">0.0112281</td>
+<td style="text-align: right;">5.5466693</td>
+<td style="text-align: right;">0.0000000</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">ONCOLOGY</td>
+<td style="text-align: left;">Num_EcampSENT</td>
+<td style="text-align: right;">0.5947521</td>
+<td style="text-align: right;">0.0040036</td>
+<td style="text-align: right;">148.5554784</td>
+<td style="text-align: right;">0.0000000</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<p>La recta de regresión con mayor pendiente es 0.717, que corresponde al equipo <code>HEART</code>.</p>
 </div>
 </div>
 </div>

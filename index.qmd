@@ -121,6 +121,22 @@ df |>
 :::
 
 :::{#exr-5}
+Seleccionar las variables `ZONA`, `ID_MÉDICO` y todas variables numéricas, y pivotar las columnas numéricas del data frame resultante.
+
+::: {.callout-tip collapse="true"}
+## Solución
+
+```{r}
+df |>
+  select(ZONA, ID_MÉDICO, starts_with("Num_")) |>
+  pivot_longer(cols = starts_with("Num_"), names_to = "Interacción", values_to = "Veces") |>
+  head() |>
+  kable()
+```
+:::
+:::
+
+:::{#exr-6}
 Filtrar el conjunto de datos para quedarse con los médicos expertos en oncología de la zona centro que han sido visitados al menos dos veces. ¿Cuántos médicos cumplen con estas condiciones?
 
 ::: {.callout-tip collapse="true"}
@@ -135,7 +151,7 @@ nrow(df_filtrado)
 :::
 :::
 
-:::{#exr-6}
+:::{#exr-7}
 Eliminar de la base de datos los médicos que no han tenido ninguna interacción. ¿Cuántos médicos quedan en la base de datos?
 
 ::: {.callout-tip collapse="true"}
@@ -150,7 +166,7 @@ nrow(df)
 :::
 :::
 
-:::{#exr-7}
+:::{#exr-8}
 Mostrar la tabla de frecuencias de los equipos (squad). Mostrar también la tabla de frecuencias de las especialidades agrupadas por equipos.
 
 ::: {.callout-tip collapse="true"}
@@ -170,7 +186,7 @@ df |>
 :::
 :::
 
-:::{#exr-8}
+:::{#exr-9}
 Dibujar el diagrama de barras de las especialidades. ¿Qué especialidad es la más frecuente? Dibujar también el diagrama de barras de las especialidades coloreando las barras según el equipo.
 
 ::: {.callout-tip collapse="true"}
@@ -184,7 +200,7 @@ df |>
 :::
 :::
 
-:::{#exr-9}
+:::{#exr-10}
 Dibujar el diagrama de barras con el número de visitas presenciales y virtuales de cada grupo. ¿Qué grupo ha tenido un mayor número de visitas presenciales? ¿Y de visitas virtuales?
 
 ::: {.callout-tip collapse="true"}
@@ -204,7 +220,7 @@ df |>
 :::
 :::
 
-:::{#exr-10}
+:::{#exr-11}
 Dibujar un histograma del número de visitas a la página web de Roche para médicos, eliminando los médicos que no han visitado la página web.
 
 ::: {.callout-tip collapse="true"}
@@ -219,7 +235,7 @@ df |>
 :::
 :::
 
-:::{#exr-11}
+:::{#exr-12}
 Dibujar el diagrama de cajas del número de visitas a la página web de Roche para médicos, eliminando los médicos que no han visitado la página web. 
 
 ¿Existen datos atípicos? Eliminar el 5% de los datos atípicos más extremos y volver a dibujar el diagrama de cajas.
@@ -244,7 +260,7 @@ df |>
 :::
 :::
 
-:::{#exr-12}
+:::{#exr-13}
 Dibujar el diagram de cajas del número de visitas a la página web de Roche para médicos, eliminando los médicos que no han visitado la página web y agrupando según el equipo. ¿Qué equipo tiene un mayor número de visitas a la página web?
 
 ::: {.callout-tip collapse="true"}
@@ -260,7 +276,7 @@ df |>
 :::
 :::
 
-:::{#exr-13}
+:::{#exr-14}
 Realizar un resumen descriptivo de las variables numéricas del conjunto de datos.
 
 ::: {.callout-tip collapse="true"}
@@ -274,7 +290,7 @@ df |>
 :::
 :::
 
-:::{#exr-14}
+:::{#exr-15}
 Realizar un resumen descriptivo con la media y la desviación típica del número de visitas presenciales y virtuales agrupadas por equipo.
 
 ::: {.callout-tip collapse="true"}
@@ -290,14 +306,28 @@ Otra forma.
 ```{r}
 df |>
   group_by(SQUAD) |>
-  select_if(is.numeric) |>
+  select(Num_VisitaF2F, Num_VisitaVirtual) |>
   summarise(across(everything(), list(mean = mean, sd = sd)) ) |> 
+  kable()
+```
+
+Y otra más.
+
+```{r}
+df |>
+  select(SQUAD, Num_VisitaF2F, Num_VisitaVirtual) |>
+  pivot_longer(cols = c(Num_VisitaF2F, Num_VisitaVirtual), names_to = "Tipo_Visita", values_to = "Num_Visitas") |>
+  group_by(SQUAD, Tipo_Visita) |>
+  summarise(
+    Media = mean(Num_Visitas),
+    Desv_Tipica = sd(Num_Visitas)
+  ) |>
   kable()
 ```
 :::
 :::  
 
-:::{#exr-14}
+:::{#exr-16}
 Dibujar el diagrama de dispersión entre el número de correos electrónicos enviados y el número de correos electrónicos abiertos. ¿Existe alguna relación entre estas dos variables?
 
 ::: {.callout-tip collapse="true"}
@@ -311,7 +341,7 @@ df |>
 :::
 :::
 
-:::{#exr-15}
+:::{#exr-17}
 Dibujar los diagramas de dispersión de todas las variables numéricas del conjunto de datos. ¿Existe alguna relación entre las variables?
 
 ::: {.callout-tip collapse="true"}
@@ -327,3 +357,52 @@ df |>
 :::
 :::
 
+:::{#exr-18}
+Calcular la recta de regresión del número de correos electrónicos abiertos sobre el número de correos electrónicos enviados. ¿Cuál es la tasa de apertura de correos electrónicos?
+
+::: {.callout-tip collapse="true"}
+## Solución
+
+```{r}
+library(broom)
+modelo <- lm(Num_EcampOPEN ~ Num_EcampSENT, data = df)
+
+modelo |>
+  tidy() |>
+  kable()
+```
+
+La tasa de apertura de correos electrónicos es la pendiente de la recta de regresión, es decir, el coeficiente de la variable `Num_EcampSENT` que vale 0.5664, o lo que es lo mismo, el 56.64%.
+:::
+
+Dibujar la recta de regresión sobre el diagrama de dispersión.
+
+::: {.callout-tip collapse="true"}
+## Solución
+
+```{r}
+df |> 
+  ggplot(aes(x = Num_EcampSENT, y = Num_EcampOPEN)) +
+  geom_point() +
+  geom_smooth(method = "lm", se = FALSE)
+```
+:::
+:::
+
+:::{#exr-19}
+Calcular la recta de regresión del número de correos electrónicos abiertos sobre el número de correos electrónicos enviados para cada equipo. ¿En qué equipo la tasa de apertura de correos electrónicos es mayor?
+
+::: {.callout-tip collapse="true"}
+## Solución
+
+```{r}
+df |> 
+  nest_by(SQUAD) |>
+  mutate(modelo = list(lm(Num_EcampOPEN ~ Num_EcampSENT, data = data))) |>
+  reframe(tidy(modelo)) |>
+  kable()
+```
+
+La recta de regresión con mayor pendiente es 0.717, que corresponde al equipo `HEART`.
+:::
+:::
